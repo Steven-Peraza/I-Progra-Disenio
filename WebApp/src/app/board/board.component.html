@@ -6,7 +6,8 @@
     <div *ngFor="let row of currentStatus.status; let j = index" class="col-md">
       <div class="row">
       <div  *ngFor="let col of row; let k = index" class=" celda card bg-light">
-          <h1 >{{col=="B" ? "🐯":(col=="W"?"🐵":" ")}}</h1>
+        <img *ngIf="col=='B'" src="../../assets/img/club-chip.png" width="100px" class="img-rounded">
+        <img *ngIf="col=='W'" src="../../assets/img/diamonds-token.png" width="100px" class="img-rounded">
       </div>
     </div>
     </div>

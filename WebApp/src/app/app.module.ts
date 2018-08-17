@@ -2,6 +2,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { HttpClientModule } from '@angular/common/http';
+
 
 //Rutas
 import { APP_ROUTING } from './app.routing';
@@ -22,6 +24,7 @@ import { BoardComponent } from './board/board.component';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     NgbModule.forRoot(),
     APP_ROUTING
   ],

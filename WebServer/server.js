@@ -1,14 +1,16 @@
-const http = require('http');
+var express = require('express'),
+  app = express(),
+  port = process.env.PORT || 3000;
 
-const hostname = '127.0.0.1';
-const port = 3000;
+app.listen(port);
+bodyParser = require('body-parser');
 
-const server = http.createServer((req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello World\n');
-});
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
-});
+
+var routes = require('./api/routes/WSRoutes'); //importing route
+routes(app); //register the route
+
+
+console.log('Game API server started on: ' + port);

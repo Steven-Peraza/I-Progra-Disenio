@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
+import { HttpRequest, HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BoardServiceService {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   defaultStatus = [
     ["B","W","B","W","B"],
@@ -15,8 +17,8 @@ export class BoardServiceService {
     ["B","B","B","B","B"],
 ]
 
-getStatus():GameStatus{
-  return {dimension: 4,code: 200, status:this.defaultStatus}
+getStatus():Observable<Object>{
+  return this.http.get("http://localhost:3000/gameStatus");
 }
 
 
@@ -25,5 +27,5 @@ getStatus():GameStatus{
 export interface GameStatus{
     dimension:number; // Number of rows and colums of the board
     code:number; //Response status code; if sucessful 200, if error -1
-    status:any;
+    status:Array<Array<string>>;
 }

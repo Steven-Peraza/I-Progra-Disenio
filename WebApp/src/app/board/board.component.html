@@ -1,15 +1,14 @@
-<p>
-  board works!
-</p>
+<h1>Jugador 1</h1>
 <div class="container">
   <div class="table-responsive">
-    <div *ngFor="let row of currentStatus.status; let j = index" class="col-md">
+    <div *ngFor="let row of currentStatus.status; let j = index" class="col-md" >
       <div class="row">
-      <div  *ngFor="let col of row; let k = index" class=" celda card bg-light">
-        <img *ngIf="col=='B'" src="../../assets/img/club-chip.png" width="100px" class="img-rounded">
-        <img *ngIf="col=='W'" src="../../assets/img/diamonds-token.png" width="100px" class="img-rounded">
+        <div *ngFor="let col of row; let k = index" style="background: green" class=" celda card" >
+          <img *ngIf="col=='B'" src="../../assets/img/mushroomsSprites/a.png" width="100px" class="img-rounded">
+          <img *ngIf="col=='W'" src="../../assets/img/mushroomsSprites/b.png" width="100px" class="img-rounded">
+        </div>
       </div>
-    </div>
     </div>
   </div>
 </div>
+<h3>Puntaje: 100</h3>

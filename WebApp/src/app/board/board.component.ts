@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {BoardServiceService, GameStatus} from '../services/board-service.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-board',
@@ -13,9 +14,16 @@ export class BoardComponent implements OnInit {
 
    }
    ngOnInit(): void {
-     this.currentStatus = this._dataService.getStatus();
+    this._dataService.getStatus()
+    .subscribe((data: GameStatus) => this.currentStatus = {
+      status: data['status'],
+      dimension: data['dimension'],
+      code: data['code']
+    });
    }
-   currentStatus:GameStatus;
+   currentStatus:GameStatus = { status: [],
+   dimension: 4,
+   code: 200};
 
 
   }

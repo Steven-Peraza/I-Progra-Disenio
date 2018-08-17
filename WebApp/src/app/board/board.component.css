@@ -2,6 +2,6 @@
 .celda{
   height: 110px;
   width: 110px;
-  color: black;
   text-align: center;
+  border-color: black;
 }

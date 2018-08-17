@@ -4,8 +4,8 @@ import {RouterModule,Routes} from '@angular/router';
 import { BoardComponent } from './board/board.component';
 
 const APP_ROUTES: Routes = [
-  { path: 'board', component: BoardComponent },
-  { path: '**', pathMatch: 'full', redirectTo: 'board' }
+  { path: 'home', component: BoardComponent },
+  { path: '**', pathMatch: 'full', redirectTo: 'home' }
 ];
 
 export const APP_ROUTING = RouterModule.forRoot(APP_ROUTES, {useHash:true});

@@ -19,7 +19,7 @@ export default class tablero {
         // se rellena la matriz con null
         for (let row = 0; row < this.tamanyo; row++) {
             for (let col = 0; col < this.tamanyo; col++) {
-              this.tableroJuego[row][col] = null;
+              this.tableroJuego[row][col] = new pieza(0, row, col);
             }
           }
         // se colocan las piezas iniciales en las posiciones por defecto
@@ -28,15 +28,7 @@ export default class tablero {
         this.tableroJuego[Math.round(this.tamanyo/2)][Math.round((this.tamanyo/2)-1)] = new pieza(2,/*'img player 2',*/Math.round(this.tamanyo/2),Math.round((this.tamanyo/2)-1));     
         this.tableroJuego[Math.round(this.tamanyo/2)][Math.round(this.tamanyo/2)] = new pieza(1,/*'img player 1',*/Math.round(this.tamanyo/2),Math.round(this.tamanyo/2));
     }
-    /*clone() {
-    const clonedBoard = new tablero(this.tamanyo);
-    for (let row = 0; row < this.tamanyo; row++) {
-      for (let col = 0; col < this.tamanyo; col++) {
-        clonedBoard.tableroJuego[row][col] = this.tableroJuego[row][col];
-      }
-    }
-    return clonedBoard;
-    }*/
+    
     // funcion que recorre el array en busca de piezas y tiene un contador para
     // cada score por jugador y retorna un array con los 2 contadores
     getScore(): Array<number> {

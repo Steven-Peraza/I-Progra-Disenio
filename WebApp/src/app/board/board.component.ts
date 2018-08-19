@@ -17,8 +17,8 @@ export class BoardComponent implements OnInit {
     this.updateScreen();
    }
    currentStatus:GameStatus = { status: [],
-   dimension: 4,
-   code: 200};
+   //dimension: 4,
+   score: 200};
 
    markPosition(j,k){
      console.log("Fila "+j+" "+"Columna "+k)
@@ -34,9 +34,8 @@ export class BoardComponent implements OnInit {
 
    writeInfo(data:GameStatus){
     this.currentStatus = {
-      status: data['status'],
-      dimension: data['dimension'],
-      code: data['code']
+      status: data['board'],
+      score: data['score']
     }
    }
 

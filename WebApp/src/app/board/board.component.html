@@ -5,11 +5,11 @@
       <div class="row">
         <div *ngFor="let col of row; let k = index" style="background: green" class=" celda card" 
         (click)="markPosition(j,k)">
-          <img *ngIf="col=='B'" src="../../assets/img/mushroomsSprites/a.png" width="100px" class="img-rounded">
-          <img *ngIf="col=='W'" src="../../assets/img/mushroomsSprites/b.png" width="100px" class="img-rounded">
+          <img *ngIf="col.player=='1'" src="../../assets/img/mushroomsSprites/g.png" width="100px" class="img-rounded">
+          <img *ngIf="col.player=='2'" src="../../assets/img/mushroomsSprites/b.png" width="100px" class="img-rounded">
         </div>
       </div>
     </div>
   </div>
 </div>
-<h3>Puntaje: 100</h3>
+<h3>Puntaje Jugador 1 {{currentStatus.score[0]}} Jugador 2 {{currentStatus.score[1]}}</h3>

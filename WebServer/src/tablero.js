@@ -121,7 +121,7 @@ var tablero = (function () {
     };
     // funcion auxiliar que chequea si la posicion enviada por parametros esta vacia o no
     tablero.prototype.campoVacio = function (row, col) {
-        return this.tableroJuego[row][col] === null;
+        return this.tableroJuego[row][col].getPlayer() === 0;
     };
     // funcion auxiliar que revisa si la posicion en la direccion enviada por parametro
     // es vacia, del mismo color o del color contrario

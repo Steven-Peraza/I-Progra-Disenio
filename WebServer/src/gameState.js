@@ -46,6 +46,9 @@ var GameState = (function () {
             return new GameState(this.tableroGS.movida(movimiento, this.turnoJugador), 1);
         }
     };
+    GameState.prototype.dataAct = function () {
+        return { board: this.tableroGS.tableroJuego, score: this.puntaje };
+    };
     return GameState;
 }());
 exports["default"] = GameState;

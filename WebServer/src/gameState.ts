@@ -58,4 +58,8 @@ export default class GameState {
     }
 
   }
+
+  dataAct() {
+    return { board: this.tableroGS.tableroJuego, score: this.puntaje };
+  }
 };

@@ -29,7 +29,7 @@ return this.http.post(CONSTANTS.SERVER_ROUTE()+"/positionMarked",{"row":j,"colum
 
 }
 export interface GameStatus{
-    dimension:number; // Number of rows and colums of the board
-    code:number; //Response status code; if sucessful 200, if error -1
+    //dimension:number; // Number of rows and colums of the board
+    score:number; //Response status code; if sucessful 200, if error -1
     status:Array<Array<string>>;
 }

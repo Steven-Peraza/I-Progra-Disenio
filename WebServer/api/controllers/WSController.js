@@ -1,5 +1,5 @@
 
-
+game = require('../../src/gameState')
 
 status = {
     "dimension": 4, "code": 200, "status":
@@ -11,7 +11,10 @@ status = {
 }
 exports.getAllGames = function (req, res) {
     console.log("ruta funcionando");
-    res.json(status)
+    var sd = game["default"].nuevoJuego(8);
+    res.json(sd);
+    //res.json(status)
+    
 };
 
 exports.positionMarked = function (req, res) {

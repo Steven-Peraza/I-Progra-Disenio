@@ -6,12 +6,14 @@ export default class tablero {
     public tamanyo: number;
     public tableroJuego : Array<Array<pieza>>;
     Directions = [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]];
+    public cambioTurno: boolean;
     
     // constructor que recibe el tamanyo del tablero como parametro
 
     constructor(size:number) {
         this.tableroJuego = new Array(size);
         this.tamanyo = size;
+        this.cambioTurno = false;
         for (let row = 0; row < this.tamanyo; row++) {
             this.tableroJuego[row] = new Array(this.tamanyo);
           }
@@ -76,7 +78,8 @@ export default class tablero {
         auxPoszi = this.getPosiblesJugadas(nuevaPieza.getPlayer());
         for (const iterator of auxPoszi) {
           if (iterator.getPos() == newMovi){
-            flag = true;}
+            flag = true;
+          }
         }
 
       if (flag){
@@ -88,6 +91,7 @@ export default class tablero {
         for (const piezaAct of piezasACambiar) {
           this.tableroJuego[piezaAct.row][piezaAct.col] = new pieza(nuevaPieza.getPlayer(),piezaAct.row,piezaAct.col);
         }
+        this.cambioTurno = true;
       }
        return this;
     }

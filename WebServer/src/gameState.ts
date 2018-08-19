@@ -45,12 +45,12 @@ export default class GameState {
       throw new Error('El juego termino...');
     }
     // cuando se crea el nuevo estado de juego, se cambia el juegador...
-    if (this.turnoJugador == 1){
+    if ((this.turnoJugador == 1) && (this.tableroGS.cambioTurno)){
       return new GameState(
         this.tableroGS.movida(movimiento,this.turnoJugador),
         2
       )
-    } else{
+    } else if ((this.turnoJugador == 2) && (this.tableroGS.cambioTurno)) {
       return new GameState(
         this.tableroGS.movida(movimiento,this.turnoJugador),
         1

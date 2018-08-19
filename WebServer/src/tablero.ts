@@ -28,7 +28,7 @@ export default class tablero {
         this.tableroJuego[Math.round(this.tamanyo/2)][Math.round((this.tamanyo/2)-1)] = new pieza(2,/*'img player 2',*/Math.round(this.tamanyo/2),Math.round((this.tamanyo/2)-1));     
         this.tableroJuego[Math.round(this.tamanyo/2)][Math.round(this.tamanyo/2)] = new pieza(1,/*'img player 1',*/Math.round(this.tamanyo/2),Math.round(this.tamanyo/2));
     }
-    
+
     // funcion que recorre el array en busca de piezas y tiene un contador para
     // cada score por jugador y retorna un array con los 2 contadores
     getScore(): Array<number> {
@@ -132,7 +132,7 @@ export default class tablero {
     
     // funcion auxiliar que chequea si la posicion enviada por parametros esta vacia o no
     campoVacio(row: number, col: number) {
-        return this.tableroJuego[row][col] === null;
+        return this.tableroJuego[row][col].getPlayer() === 0;
     }
     
     // funcion auxiliar que revisa si la posicion en la direccion enviada por parametro

@@ -30,7 +30,7 @@ export default class tablero {
         this.tableroJuego[Math.round(this.tamanyo/2)][Math.round((this.tamanyo/2)-1)] = new pieza(2,/*'img player 2',*/Math.round(this.tamanyo/2),Math.round((this.tamanyo/2)-1));     
         this.tableroJuego[Math.round(this.tamanyo/2)][Math.round(this.tamanyo/2)] = new pieza(1,/*'img player 1',*/Math.round(this.tamanyo/2),Math.round(this.tamanyo/2));
     }
-
+    
     // funcion que recorre el array en busca de piezas y tiene un contador para
     // cada score por jugador y retorna un array con los 2 contadores
     getScore(): Array<number> {
@@ -72,6 +72,7 @@ export default class tablero {
     // funcion que inserta en la matriz la nueva ficha y llama a otra funcion auxiliar
     // para determinar si se deben "voltear" alguna(s) ficha(s) y retorna el estado del juego actual
     movida(newMovi: Array<number>,player: number) {
+        this.cambioTurno = false;
         let auxPoszi: pieza[];
         let nuevaPieza: pieza = new pieza(player,newMovi[0],newMovi[1]);
         let flag: boolean = false;
@@ -144,7 +145,7 @@ export default class tablero {
     
     // funcion auxiliar que chequea si la posicion enviada por parametros esta vacia o no
     campoVacio(row: number, col: number) {
-        return this.tableroJuego[row][col].getPlayer() === 0;
+      return this.tableroJuego[row][col].getPlayer() === 0;
     }
     
     // funcion auxiliar que revisa si la posicion en la direccion enviada por parametro

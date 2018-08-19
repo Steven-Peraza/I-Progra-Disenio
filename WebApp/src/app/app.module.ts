@@ -1,17 +1,18 @@
-//Angular Imports
+// Angular Imports
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
-//Rutas
+
+// Rutas
 import { APP_ROUTING } from './app.routing';
 
-//Services
-import {BoardServiceService} from './services/board-service.service'
+// Services
+import {BoardServiceService} from './services/board-service.service';
 
 
 
-//Components
+// Components
 import { AppComponent } from './app.component';
 import { BoardComponent } from './board/board.component';
 

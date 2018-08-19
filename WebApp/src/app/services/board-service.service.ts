@@ -12,12 +12,12 @@ export class BoardServiceService {
   constructor(private http: HttpClient) { }
 
   defaultStatus = [
-    ["B","W","B","W","B"],
-    ["V","V","B","B","B"],
-    ["B","B","B","V","B"],
-    ["V","W","V","W","B"],
-    ["B","B","B","B","B"],
-]
+    ['B', 'W', 'B', 'W', 'B'],
+    ['V', 'V', 'B', 'B', 'B'],
+    ['B', 'B', 'B', 'V', 'B'],
+    ['V', 'W', 'V', 'W', 'B'],
+    ['B', 'B', 'B', 'B', 'B'],
+];
 
 getStatus():Observable<Object>{
   return this.http.get(CONSTANTS.SERVER_ROUTE()+"/gameStatus");

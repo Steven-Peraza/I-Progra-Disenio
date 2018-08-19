@@ -14,16 +14,32 @@ export class BoardComponent implements OnInit {
 
    }
    ngOnInit(): void {
-    this._dataService.getStatus()
-    .subscribe((data: GameStatus) => this.currentStatus = {
-      status: data['status'],
-      dimension: data['dimension'],
-      code: data['code']
-    });
+    this.updateScreen();
    }
    currentStatus:GameStatus = { status: [],
    dimension: 4,
    code: 200};
+
+   markPosition(j,k){
+     console.log("Fila "+j+" "+"Columna "+k)
+     //this.currentStatus["status"][j][k] = "W";
+    this._dataService.positionMarked(j,k)
+    .subscribe((res:GameStatus) => this.writeInfo(res));
+   }
+
+   updateScreen(){
+    this._dataService.getStatus()
+    .subscribe((data: GameStatus) => this.writeInfo(data));
+   }
+
+   writeInfo(data:GameStatus){
+    this.currentStatus = {
+      status: data['status'],
+      dimension: data['dimension'],
+      code: data['code']
+    }
+   }
+
 
 
   }

@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpRequest, HttpClient } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import "../constants"
+import { CONSTANTS } from '../constants';
 
 @Injectable({
   providedIn: 'root'
@@ -18,10 +20,12 @@ export class BoardServiceService {
 ]
 
 getStatus():Observable<Object>{
-  return this.http.get("http://localhost:3000/gameStatus");
+  return this.http.get(CONSTANTS.SERVER_ROUTE()+"/gameStatus");
 }
 
-
+positionMarked(j,k){
+return this.http.post(CONSTANTS.SERVER_ROUTE()+"/positionMarked",{"row":j,"column":k});
+}
 
 }
 export interface GameStatus{

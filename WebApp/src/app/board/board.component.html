@@ -3,7 +3,8 @@
   <div class="table-responsive">
     <div *ngFor="let row of currentStatus.status; let j = index" class="col-md" >
       <div class="row">
-        <div *ngFor="let col of row; let k = index" style="background: green" class=" celda card" >
+        <div *ngFor="let col of row; let k = index" style="background: green" class=" celda card" 
+        (click)="markPosition(j,k)">
           <img *ngIf="col=='B'" src="../../assets/img/mushroomsSprites/a.png" width="100px" class="img-rounded">
           <img *ngIf="col=='W'" src="../../assets/img/mushroomsSprites/b.png" width="100px" class="img-rounded">
         </div>

@@ -1,11 +1,24 @@
 
 
-exports.getAllGames = function(req,res){
-console.log("ruta funcionando");
-res.setHeader('Access-Control-Allow-Origin', '*');
-res.json({"dimension": 4,"code": 200, "status":[["B","W","B","W","B"],
-["V","V","B","B","B"],
-["B","B","B","V","B"],
-["V","W","V","W","B"],
-["B","B","B","B","B"]]
-})};
+
+status = {
+    "dimension": 4, "code": 200, "status":
+        [['V', 'V', 'V', 'V', 'V'],
+        ["V", "V", "V", "V", "V"],
+        ["V", "V", "V", "V", "V"],
+        ["V", "V", "V", "V", "V"],
+        ["V", "V", "V", "V", "V"]]
+}
+exports.getAllGames = function (req, res) {
+    console.log("ruta funcionando");
+    res.json(status)
+};
+
+exports.positionMarked = function (req, res) {
+
+    console.log("routedAccesed")
+    console.log(req.body["row"]);
+    console.log(req.body["column"]);
+    this.status["status"][req.body["row"]][req.body["column"]] = "B";
+    res.json(status);
+}

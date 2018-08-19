@@ -70,17 +70,25 @@ export default class tablero {
     // funcion que inserta en la matriz la nueva ficha y llama a otra funcion auxiliar
     // para determinar si se deben "voltear" alguna(s) ficha(s) y retorna el estado del juego actual
     movida(newMovi: Array<number>,player: number) {
-        //const clonedBoard = this.clone();
+        let auxPoszi: pieza[];
         let nuevaPieza: pieza = new pieza(player,newMovi[0],newMovi[1]);
-        // place piece
+        let flag: boolean = false;
+        auxPoszi = this.getPosiblesJugadas(nuevaPieza.getPlayer());
+        for (const iterator of auxPoszi) {
+          if (iterator.getPos() == newMovi){
+            flag = true;}
+        }
+
+      if (flag){
+        // se coloca la pieza
         this.tableroJuego[newMovi[0]][newMovi[1]] = nuevaPieza;
     
-        // flip other pieces
+        // sedan vuelta las piezas necesarias
         const piezasACambiar = this.getPiezasACambiar(nuevaPieza);
         for (const piezaAct of piezasACambiar) {
           this.tableroJuego[piezaAct.row][piezaAct.col] = new pieza(nuevaPieza.getPlayer(),piezaAct.row,piezaAct.col);
         }
-    
+      }
        return this;
     }
     

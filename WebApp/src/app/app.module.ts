@@ -17,11 +17,13 @@ import {BoardServiceService} from './services/board-service.service';
 // Components
 import { AppComponent } from './app.component';
 import { BoardComponent } from './board/board.component';
+import { PlayViewComponent } from './play-view/play-view.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    BoardComponent
+    BoardComponent,
+    PlayViewComponent
   ],
   imports: [
     BrowserModule,

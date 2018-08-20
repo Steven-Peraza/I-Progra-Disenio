@@ -2,7 +2,7 @@
 // imports necesarios para el correcto funcionamiento de la clase
 exports.__esModule = true;
 var tablero_1 = require("./tablero");
-var GameState = (function () {
+var GameState = /** @class */ (function () {
     // cada vez que se realiza un movimiento se crea un nuevo estado de juego
     function GameState(tablero, turn) {
         this.tableroGS = tablero;
@@ -35,15 +35,19 @@ var GameState = (function () {
     };
     // funcion que se encarga de realizar la jugada y crear un nuevo estado de juego
     GameState.prototype.jugadaRealizada = function (movimiento) {
+        //console.log(this.tableroGS.cambioTurno);
         if (this.gameStatus !== 1) {
             throw new Error('El juego termino...');
         }
         // cuando se crea el nuevo estado de juego, se cambia el juegador...
-        if (this.turnoJugador == 1) {
-            return new GameState(this.tableroGS.movida(movimiento, this.turnoJugador), 2);
+        if ((this.turnoJugador == 1) && (this.tableroGS.cambioTurno)) {
+            return new GameState(this.tableroGS.movida(movimiento, 2), 2);
+        }
+        else if ((this.turnoJugador == 2) && (this.tableroGS.cambioTurno)) {
+            return new GameState(this.tableroGS.movida(movimiento, 1), 1);
         }
         else {
-            return new GameState(this.tableroGS.movida(movimiento, this.turnoJugador), 1);
+            return new GameState(this.tableroGS.movida(movimiento, this.turnoJugador), this.turnoJugador);
         }
     };
     GameState.prototype.dataAct = function () {

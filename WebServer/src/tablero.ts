@@ -78,11 +78,11 @@ export default class tablero {
         let flag: boolean = false;
         auxPoszi = this.getPosiblesJugadas(nuevaPieza.getPlayer());
         for (const iterator of auxPoszi) {
-          if (iterator.getPos() == newMovi){
+          let asd = iterator.getPos();
+          if ((asd[0] == newMovi[0]) && (asd[1] == newMovi[1])){
             flag = true;
           }
         }
-
       if (flag){
         // se coloca la pieza
         this.tableroJuego[newMovi[0]][newMovi[1]] = nuevaPieza;

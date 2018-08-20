@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-var pieza = (function () {
+var pieza = /** @class */ (function () {
     function pieza(playo, row, col) {
         this.player = playo;
         this.pos = new Array(2);

@@ -41,25 +41,31 @@ export default class GameState {
   
   // funcion que se encarga de realizar la jugada y crear un nuevo estado de juego
   jugadaRealizada(movimiento:Array<number>): GameState {
-    if (this.gameStatus !== 1) {
-      throw new Error('El juego termino...');
-    }
+    //console.log(this.tableroGS.cambioTurno);
+    /*if (this.gameStatus !== 1) {
+      
+    }*/
     // cuando se crea el nuevo estado de juego, se cambia el juegador...
-    if (this.turnoJugador == 1){
+    if ((this.turnoJugador == 1) && (this.tableroGS.cambioTurno)){
       return new GameState(
-        this.tableroGS.movida(movimiento,this.turnoJugador),
+        this.tableroGS.movida(movimiento, 2),
         2
       )
-    } else{
+    } else if ((this.turnoJugador == 2) && (this.tableroGS.cambioTurno)) {
+      return new GameState(
+        this.tableroGS.movida(movimiento, 1),
+        1
+      )
+    } else {
       return new GameState(
         this.tableroGS.movida(movimiento,this.turnoJugador),
-        1
+        this.turnoJugador
       )
     }
 
   }
 
   dataAct() {
-    return { board: this.tableroGS.tableroJuego, score: this.puntaje };
+    return { board: this.tableroGS.tableroJuego, score: this.puntaje, stat: this.gameStatus , win: this.winner };
   }
 };

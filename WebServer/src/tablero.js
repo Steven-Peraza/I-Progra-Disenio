@@ -2,12 +2,13 @@
 exports.__esModule = true;
 // importaciones necesarias para el funcionamiento adecuado de la clase
 var pieza_1 = require("./pieza");
-var tablero = (function () {
+var tablero = /** @class */ (function () {
     // constructor que recibe el tamanyo del tablero como parametro
     function tablero(size) {
         this.Directions = [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]];
         this.tableroJuego = new Array(size);
         this.tamanyo = size;
+        this.cambioTurno = false;
         for (var row = 0; row < this.tamanyo; row++) {
             this.tableroJuego[row] = new Array(this.tamanyo);
         }
@@ -63,15 +64,28 @@ var tablero = (function () {
     // funcion que inserta en la matriz la nueva ficha y llama a otra funcion auxiliar
     // para determinar si se deben "voltear" alguna(s) ficha(s) y retorna el estado del juego actual
     tablero.prototype.movida = function (newMovi, player) {
-        //const clonedBoard = this.clone();
+        this.cambioTurno = false;
+        var auxPoszi;
         var nuevaPieza = new pieza_1["default"](player, newMovi[0], newMovi[1]);
-        // place piece
-        this.tableroJuego[newMovi[0]][newMovi[1]] = nuevaPieza;
-        // flip other pieces
-        var piezasACambiar = this.getPiezasACambiar(nuevaPieza);
-        for (var _i = 0, piezasACambiar_1 = piezasACambiar; _i < piezasACambiar_1.length; _i++) {
-            var piezaAct = piezasACambiar_1[_i];
-            this.tableroJuego[piezaAct.row][piezaAct.col] = new pieza_1["default"](nuevaPieza.getPlayer(), piezaAct.row, piezaAct.col);
+        var flag = false;
+        auxPoszi = this.getPosiblesJugadas(nuevaPieza.getPlayer());
+        for (var _i = 0, auxPoszi_1 = auxPoszi; _i < auxPoszi_1.length; _i++) {
+            var iterator = auxPoszi_1[_i];
+            var asd = iterator.getPos();
+            if ((asd[0] == newMovi[0]) && (asd[1] == newMovi[1])) {
+                flag = true;
+            }
+        }
+        if (flag) {
+            // se coloca la pieza
+            this.tableroJuego[newMovi[0]][newMovi[1]] = nuevaPieza;
+            // sedan vuelta las piezas necesarias
+            var piezasACambiar = this.getPiezasACambiar(nuevaPieza);
+            for (var _a = 0, piezasACambiar_1 = piezasACambiar; _a < piezasACambiar_1.length; _a++) {
+                var piezaAct = piezasACambiar_1[_a];
+                this.tableroJuego[piezaAct.row][piezaAct.col] = new pieza_1["default"](nuevaPieza.getPlayer(), piezaAct.row, piezaAct.col);
+            }
+            this.cambioTurno = true;
         }
         return this;
     };
@@ -142,9 +156,11 @@ var tablero = (function () {
             if (this.campoVacio(fila, col)) {
                 return false;
             }
+            // si se encontro con una pieza del mismo color se retorna una bandera que indica si se encontro una pieza de otro color...
             else if (this.tableroJuego[fila][col].getPlayer() === newPieza.getPlayer()) {
                 return fichaOtroColor;
             }
+            // si se encontro con una ficha del color contrario, se cambia la bandera y el movimiento en esa direccion es legal
             else {
                 fichaOtroColor = true;
             }

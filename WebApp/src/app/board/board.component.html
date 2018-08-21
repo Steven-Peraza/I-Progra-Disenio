@@ -3,13 +3,14 @@
   <div class="table-responsive">
     <div *ngFor="let row of currentStatus.status; let j = index" class="col-md" >
       <div class="row">
-        <div *ngFor="let col of row; let k = index" style="background: green" class=" celda card" 
+        <div *ngFor="let col of row; let k = index" [ngStyle]="{'background':bgColor}" class="celda card" 
         (click)="markPosition(j,k)">
-          <img *ngIf="col.player=='1'" src="../../assets/img/mushroomsSprites/g.png" width="100px" class="img-rounded">
-          <img *ngIf="col.player=='2'" src="../../assets/img/mushroomsSprites/b.png" width="100px" class="img-rounded">
+          <img *ngIf="col.player=='1'" [src]="sprite1"  width="100px" class="img-rounded">
+          <img *ngIf="col.player=='2'" [src]="sprite2" width="100px" class="img-rounded">
         </div>
       </div>
     </div>
   </div>
 </div>
-<h3>Puntaje Jugador 1 {{currentStatus.score[0]}} Jugador 2 {{currentStatus.score[1]}}</h3>
+<h3>{{player1}} {{currentStatus.score[0]}}</h3>
+<h3>{{player2}} {{currentStatus.score[1]}}</h3>

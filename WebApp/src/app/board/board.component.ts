@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import {BoardServiceService, GameStatus} from '../services/board-service.service';
+import { ActivatedRoute } from "@angular/router";
 import { Observable } from 'rxjs';
 
 @Component({
@@ -8,18 +9,29 @@ import { Observable } from 'rxjs';
   styleUrls: ['./board.component.css']
 })
 export class BoardComponent implements OnInit {
-
-
-  constructor(private _dataService:BoardServiceService) {
+  constructor(private _dataService:BoardServiceService, private _route:ActivatedRoute) {
+    
 
    }
    ngOnInit(): void {
+     this.bgColor = this._route.snapshot.paramMap.get('bgColor');
+     this.player1= this._route.snapshot.paramMap.get('player1');
+     this.player2 = this._route.snapshot.paramMap.get('player2');
+     this.sprite1 = this._route.snapshot.paramMap.get('p1Sprite');
+     this.sprite2 = this._route.snapshot.paramMap.get('p2Sprite');
+     this.size = this._route.snapshot.paramMap.get('size');
+
     this.updateScreen();
    }
    currentStatus:GameStatus = { status: [],
    //dimension: 4,
    score: 200};
-
+bgColor = ""
+player1 = ""
+player2 = ""
+size = ""
+sprite1 =  "../../assets/img/mushroomsSprites/l.png";
+sprite2 =  "../../assets/img/mushroomsSprites/g.png";
    markPosition(j,k){
      console.log("Fila "+j+" "+"Columna "+k)
      //this.currentStatus["status"][j][k] = "W";

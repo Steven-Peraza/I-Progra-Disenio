@@ -1,3 +1,57 @@
-<p>
-  play-view works!
-</p>
+<div class="container">
+  <div class="card text-white bg-dark mb-3">
+    <div class="card-header">Crear Partida</div>
+    <div class="card-body">
+      <form>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="player1Input">Player 1</label>
+            <input [(ngModel)]="this.gameConfig.player1" name="first"type="text" class="form-control" id="player1Input" placeholder="username">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="player2Input">Player 2</label>
+            <input [(ngModel)]="this.gameConfig.player2" name="first" type="text" class="form-control" id="player2Input" placeholder="username">
+          </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="inputState">{{this.gameConfig.player1}} Mushroom</label>
+                <select (change)="onChange(1,$event.target.value)" id="player1M" class="form-control">
+                  <option *ngFor="let letter of letters" [value]="letter[1]"> {{letter[0]}}</option>
+                </select>
+                <img [src]="player1M" width="30px" class="img-rounded">
+              </div>
+          <div class="form-group col-md-4">
+            <label for="inputState">{{this.gameConfig.player2}} Mushroom</label>
+            <select (change)="onChange(2,$event.target.value)" id="player2M" class="form-control">
+              <option *ngFor="let letter of letters" [value]="letter[1]"> {{letter[0]}}</option>
+            </select>
+            <img [src]="player2M" width="30px" class="img-rounded">
+          </div>
+        </div>
+        <div class="form-group col-md-4">
+            <label for="inputState">BoardSize</label>
+            <select (change)="onChangeBs($event.target.value)" id="BoardSizeInput" class="form-control">
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>
+          </div>
+          <div class="form-group col-md-4">
+              <label for="inputState">Background Color</label>
+              <select (change)="onChangeBg($event.target.value)" id="BackgroundColorInput" class="form-control">
+                <option value="gray">gray</option>
+                <option value="green">green</option>
+                <option value="darkgreen">dark green</option>
+                <option value="darkcyan">dark cyan</option>
+                <option value="orange">orange</option>
+              </select>
+            </div>
+
+        <button (click)="startGame()" type="button" class="btn btn-primary">Iniciar Partida</button>
+      </form>
+    </div>
+  </div>
+</div>

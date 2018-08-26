@@ -8,7 +8,6 @@ var tablero = /** @class */ (function () {
         this.Directions = [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]];
         this.tableroJuego = new Array(size);
         this.tamanyo = size;
-        this.cambioTurno = false;
         for (var row = 0; row < this.tamanyo; row++) {
             this.tableroJuego[row] = new Array(this.tamanyo);
         }
@@ -64,29 +63,17 @@ var tablero = /** @class */ (function () {
     // funcion que inserta en la matriz la nueva ficha y llama a otra funcion auxiliar
     // para determinar si se deben "voltear" alguna(s) ficha(s) y retorna el estado del juego actual
     tablero.prototype.movida = function (newMovi, player) {
-        this.cambioTurno = false;
-        var auxPoszi;
+        console.log("Player Actual " + player);
         var nuevaPieza = new pieza_1["default"](player, newMovi[0], newMovi[1]);
-        var flag = false;
-        auxPoszi = this.getPosiblesJugadas(nuevaPieza.getPlayer());
-        for (var _i = 0, auxPoszi_1 = auxPoszi; _i < auxPoszi_1.length; _i++) {
-            var iterator = auxPoszi_1[_i];
-            var asd = iterator.getPos();
-            if ((asd[0] == newMovi[0]) && (asd[1] == newMovi[1])) {
-                flag = true;
-            }
+        // se coloca la pieza
+        this.tableroJuego[newMovi[0]][newMovi[1]] = nuevaPieza;
+        // sedan vuelta las piezas necesarias
+        var piezasACambiar = this.getPiezasACambiar(nuevaPieza);
+        for (var _i = 0, piezasACambiar_1 = piezasACambiar; _i < piezasACambiar_1.length; _i++) {
+            var piezaAct = piezasACambiar_1[_i];
+            this.tableroJuego[piezaAct.row][piezaAct.col] = new pieza_1["default"](nuevaPieza.getPlayer(), piezaAct.row, piezaAct.col);
         }
-        if (flag) {
-            // se coloca la pieza
-            this.tableroJuego[newMovi[0]][newMovi[1]] = nuevaPieza;
-            // sedan vuelta las piezas necesarias
-            var piezasACambiar = this.getPiezasACambiar(nuevaPieza);
-            for (var _a = 0, piezasACambiar_1 = piezasACambiar; _a < piezasACambiar_1.length; _a++) {
-                var piezaAct = piezasACambiar_1[_a];
-                this.tableroJuego[piezaAct.row][piezaAct.col] = new pieza_1["default"](nuevaPieza.getPlayer(), piezaAct.row, piezaAct.col);
-            }
-            this.cambioTurno = true;
-        }
+        // console.log(this.tableroJuego);
         return this;
     };
     // funcion que revisa en todas las 8 direcciones posibles a la hora de insertar una nueva pieza

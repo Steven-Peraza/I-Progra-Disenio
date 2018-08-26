@@ -18,10 +18,13 @@ export class BoardComponent implements OnInit {
    }
    currentStatus:GameStatus = { status: [],
    //dimension: 4,
-   score: 200};
+   score: 200,
+   stat: 1, 
+   win: 0,
+   player: 2 };
 
    markPosition(j,k){
-     console.log("Fila "+j+" "+"Columna "+k)
+     console.log("Fila "+j+" "+"Columna "+k);
      //this.currentStatus["status"][j][k] = "W";
     this._dataService.positionMarked(j,k)
     .subscribe((res:GameStatus) => this.writeInfo(res));
@@ -35,8 +38,11 @@ export class BoardComponent implements OnInit {
    writeInfo(data:GameStatus){
     this.currentStatus = {
       status: data['board'],
-      score: data['score']
-    }
+      score: data['score'],
+      stat: data['stat'],
+      win: data['win'],
+      player: data['player']
+    };
    }
 
 

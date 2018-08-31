@@ -14,9 +14,9 @@ export class PlayViewComponent implements OnInit {
     this.started = false;
   }
 letters = [
-  ["a", "../../assets/img/mushroomsSprites/a.png"],
-  ["b", "../../assets/img/mushroomsSprites/b.png"],
-  ["c", "../../assets/img/mushroomsSprites/c.png"],
+  ["Rojo", "../../assets/img/mushroomsSprites/a.png"],
+  ["Verde", "../../assets/img/mushroomsSprites/b.png"],
+  ["Azul", "../../assets/img/mushroomsSprites/c.png"],
   ["d", "../../assets/img/mushroomsSprites/d.png"],
   ["f", "../../assets/img/mushroomsSprites/f.png"],
   ["g", "../../assets/img/mushroomsSprites/g.png"],

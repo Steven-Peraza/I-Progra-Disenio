@@ -6,14 +6,12 @@ export default class tablero {
     public tamanyo: number;
     public tableroJuego : Array<Array<pieza>>;
     Directions = [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]];
-    public cambioTurno: boolean;
     
     // constructor que recibe el tamanyo del tablero como parametro
 
     constructor(size:number) {
         this.tableroJuego = new Array(size);
         this.tamanyo = size;
-        this.cambioTurno = false;
         for (let row = 0; row < this.tamanyo; row++) {
             this.tableroJuego[row] = new Array(this.tamanyo);
           }
@@ -71,30 +69,18 @@ export default class tablero {
     
     // funcion que inserta en la matriz la nueva ficha y llama a otra funcion auxiliar
     // para determinar si se deben "voltear" alguna(s) ficha(s) y retorna el estado del juego actual
-    movida(newMovi: Array<number>,player: number) {
-        this.cambioTurno = false;
-        let auxPoszi: pieza[];
+    movida(newMovi: Array<number>,player: number):tablero {
+      console.log("Player Actual "+ player);
         let nuevaPieza: pieza = new pieza(player,newMovi[0],newMovi[1]);
-        let flag: boolean = false;
-        auxPoszi = this.getPosiblesJugadas(nuevaPieza.getPlayer());
-        for (const iterator of auxPoszi) {
-          let asd = iterator.getPos();
-          if ((asd[0] == newMovi[0]) && (asd[1] == newMovi[1])){
-            flag = true;
-          }
-        }
-      if (flag){
         // se coloca la pieza
         this.tableroJuego[newMovi[0]][newMovi[1]] = nuevaPieza;
-    
         // sedan vuelta las piezas necesarias
         const piezasACambiar = this.getPiezasACambiar(nuevaPieza);
         for (const piezaAct of piezasACambiar) {
           this.tableroJuego[piezaAct.row][piezaAct.col] = new pieza(nuevaPieza.getPlayer(),piezaAct.row,piezaAct.col);
-        }
-        this.cambioTurno = true;
       }
-       return this;
+      // console.log(this.tableroJuego);
+      return this;
     }
     
     // funcion que revisa en todas las 8 direcciones posibles a la hora de insertar una nueva pieza

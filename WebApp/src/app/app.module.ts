@@ -25,6 +25,7 @@ import { PlayViewComponent } from './play-view/play-view.component';
 import { LoginComponent } from './login/login.component';
 import {environment} from '../environments/environment';
 import { RegisterComponent } from './register/register.component'
+import { PopComponent } from './pop/pop.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { RegisterComponent } from './register/register.component'
     BoardComponent,
     PlayViewComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    PopComponent
   ],
   imports: [
     BrowserModule,

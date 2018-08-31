@@ -1,4 +1,4 @@
-<h1>Jugador 1</h1>
+<h1>Turno Actual: Jugador {{ currentStatus.player }}</h1>
 <div class="container">
   <div class="table-responsive">
     <div *ngFor="let row of currentStatus.status; let j = index" class="col-md" >
@@ -8,9 +8,11 @@
           <img *ngIf="col.player=='1'" [src]="sprite1"  width="100px" class="img-rounded">
           <img *ngIf="col.player=='2'" [src]="sprite2" width="100px" class="img-rounded">
         </div>
-      </div>
     </div>
-  </div>
 </div>
-<h3>{{player1}} {{currentStatus.score[0]}}</h3>
-<h3>{{player2}} {{currentStatus.score[1]}}</h3>
+<h3>Puntaje Jugador 1 {{currentStatus.score[0]}} Jugador 2 {{currentStatus.score[1]}}</h3>
+<div *ngIf="currentStatus.stat==2">
+    <h1>RIP Game!
+    </h1>
+    <h2>Ganador: {{ currentStatus.win }}</h2>
+</div>

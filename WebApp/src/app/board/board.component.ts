@@ -25,15 +25,20 @@ export class BoardComponent implements OnInit {
    }
    currentStatus:GameStatus = { status: [],
    //dimension: 4,
-   score: 200};
-bgColor = ""
-player1 = ""
-player2 = ""
-size = ""
-sprite1 =  "../../assets/img/mushroomsSprites/l.png";
-sprite2 =  "../../assets/img/mushroomsSprites/g.png";
+   score: 200,
+   stat: 1, 
+   win: 0,
+   player: 2 };
+
+  bgColor = ""
+  player1 = ""
+  player2 = ""
+  size = ""
+  sprite1 =  "../../assets/img/mushroomsSprites/l.png";
+  sprite2 =  "../../assets/img/mushroomsSprites/g.png";
+
    markPosition(j,k){
-     console.log("Fila "+j+" "+"Columna "+k)
+     console.log("Fila "+j+" "+"Columna "+k);
      //this.currentStatus["status"][j][k] = "W";
     this._dataService.positionMarked(j,k)
     .subscribe((res:GameStatus) => this.writeInfo(res));
@@ -47,8 +52,11 @@ sprite2 =  "../../assets/img/mushroomsSprites/g.png";
    writeInfo(data:GameStatus){
     this.currentStatus = {
       status: data['board'],
-      score: data['score']
-    }
+      score: data['score'],
+      stat: data['stat'],
+      win: data['win'],
+      player: data['player']
+    };
    }
 
 

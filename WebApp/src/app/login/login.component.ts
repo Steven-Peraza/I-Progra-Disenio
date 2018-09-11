@@ -10,17 +10,35 @@ export class LoginComponent implements OnInit {
   constructor(private _authService:ProfilesServiceService) { }
 
   ngOnInit() {
+    this._authService.getUser()
+    .subscribe(
+      data=>{
+        console.log(data)
+      }
+    )
   }
 
   user:any = null
 
   signInWithFacebook(){
-    this._authService.signInWithFacebook();
-    
+    this.user = this._authService.signInWithFacebook()
+    .then(
+      data=>{
+        this.user = data
+        console.log(this.user)
+      }
+    );
   }
 
   signInWithGoogle(){
-    this._authService.signInWithGoogle();
+    this._authService.signInWithGoogle()
+    .then(
+      data=>{
+        this.user = data.user.displayName
+        console.log(this._authService.getUser())
+      }
+    );
+    
   }
 
 }

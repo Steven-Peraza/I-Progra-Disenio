@@ -7,6 +7,8 @@ import * as firebase from 'firebase/app'
 })
 export class ProfilesServiceService {
 
+  private static user:firebase.auth.UserCredential
+
   constructor(
     private _firebaseAuth: AngularFireAuth
   ) { }

@@ -3,15 +3,16 @@
 exports.__esModule = true;
 var tablero_1 = require("./tablero");
 var AIPlayer_1 = require("./AIPlayer");
-var GameState = /** @class */ (function () {
+var GameState = (function () {
     // cada vez que se realiza un movimiento se crea un nuevo estado de juego
-    function GameState(tablero, turn, modo, difi) {
+    function GameState(tablero, turn, modo, difi, config) {
         this.tableroGS = tablero;
         this.turnoJugador = turn;
         this.puntaje = tablero.getScore();
         this.posiblesJugadas = tablero.getPosiblesJugadas(turn);
         this.modoJuego = modo;
         this.dificultad = difi;
+        this.config = config;
         // si no hay posibles jugadas, game over... si no, se continua jugando...
         if (this.posiblesJugadas.length > 0) {
             this.gameStatus = 1;
@@ -33,8 +34,8 @@ var GameState = /** @class */ (function () {
         }
     }
     // funcion que crea una nueva partida con un tamanyo variable, comenzando con el jugador 1
-    GameState.nuevoJuego = function (tamanyo, modoJuego, dif) {
-        return new GameState(new tablero_1["default"](tamanyo), 1, modoJuego, dif);
+    GameState.nuevoJuego = function (tamanio, modoJuego, dif, config) {
+        return new GameState(new tablero_1["default"](tamanio), 1, modoJuego, dif, config);
     };
     // funcion que se encarga de realizar la jugada y crear un nuevo estado de juego
     GameState.prototype.jugadaRealizada = function (movimiento) {
@@ -42,10 +43,10 @@ var GameState = /** @class */ (function () {
         if (this.modoJuego == 1) {
             // cuando se crea el nuevo estado de juego, se cambia el juegador...
             if ((this.turnoJugador == 1) && (this.cambioTurno(movimiento))) {
-                return new GameState(this.tableroGS.movida(movimiento, 1), 2, this.modoJuego, this.dificultad);
+                return new GameState(this.tableroGS.movida(movimiento, 1), 2, this.modoJuego, this.dificultad, this.config);
             }
             else if ((this.turnoJugador == 2) && (this.cambioTurno(movimiento))) {
-                return new GameState(this.tableroGS.movida(movimiento, 2), 1, this.modoJuego, this.dificultad);
+                return new GameState(this.tableroGS.movida(movimiento, 2), 1, this.modoJuego, this.dificultad, this.config);
             }
             else {
                 return this;
@@ -54,13 +55,13 @@ var GameState = /** @class */ (function () {
         else {
             if ((this.turnoJugador == 1) && (this.cambioTurno(movimiento))) {
                 console.log("Turno Player");
-                return new GameState(this.tableroGS.movida(movimiento, 1), 2, this.modoJuego, this.dificultad);
+                return new GameState(this.tableroGS.movida(movimiento, 1), 2, this.modoJuego, this.dificultad, this.config);
             }
             else if (this.turnoJugador == 2) {
                 console.log("Turno AI");
                 var AI = new AIPlayer_1["default"](this.dificultad, this);
                 //console.log(AI.getJugada());
-                return new GameState(this.tableroGS.movida(AI.getJugada(), 2), 1, this.modoJuego, this.dificultad);
+                return new GameState(this.tableroGS.movida(AI.getJugada(), 2), 1, this.modoJuego, this.dificultad, this.config);
             }
             else {
                 console.log("La PTM!!");

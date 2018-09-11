@@ -14,13 +14,13 @@ export class BoardComponent implements OnInit {
 
    }
    ngOnInit(): void {
-     this.bgColor = this._route.snapshot.paramMap.get('bgColor');
-     this.player1= this._route.snapshot.paramMap.get('player1');
-     this.player2 = this._route.snapshot.paramMap.get('player2');
-     this.sprite1 = this._route.snapshot.paramMap.get('p1Sprite');
-     this.sprite2 = this._route.snapshot.paramMap.get('p2Sprite');
-     this.size = this._route.snapshot.paramMap.get('size');
-
+    this.id= this._route.snapshot.paramMap.get('id');
+    this._dataService.getConfig(this.id)
+    .subscribe(
+      (data)=>{
+        this.config = data
+      }
+    )
     this.updateScreen();
    }
    currentStatus:GameStatus = { status: [],
@@ -29,23 +29,26 @@ export class BoardComponent implements OnInit {
    stat: 1, 
    win: 0,
    player: 2 };
+id:string = "-1"
+config:any = {
+  player1Sprite:"../../assets/img/mushroomsSprites/c.png",
+player2Sprite:"../../assets/img/mushroomsSprites/b.png",
+player1:"Jafeth",
+player2:"Steven",
+size:"8",
+bgColor:"darkgreen"
+}
 
-  bgColor = ""
-  player1 = ""
-  player2 = ""
-  size = ""
-  sprite1 =  "../../assets/img/mushroomsSprites/l.png";
-  sprite2 =  "../../assets/img/mushroomsSprites/g.png";
 
    markPosition(j,k){
      console.log("Fila "+j+" "+"Columna "+k);
      //this.currentStatus["status"][j][k] = "W";
-    this._dataService.positionMarked(j,k)
+    this._dataService.positionMarked(j,k,this.id)
     .subscribe((res:GameStatus) => this.writeInfo(res));
    }
 
    updateScreen(){
-    this._dataService.getStatus()
+    this._dataService.getStatus(this.id)
     .subscribe((data: GameStatus) => this.writeInfo(data));
    }
 

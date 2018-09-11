@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
-
+import { BoardServiceService } from "../services/board-service.service";
 @Component({
   selector: 'app-play-view',
   templateUrl: './play-view.component.html',
@@ -8,7 +8,7 @@ import { Router } from "@angular/router";
 })
 export class PlayViewComponent implements OnInit {
 
-  constructor(private _router:Router) { }
+  constructor(private _router:Router,private _dataService:BoardServiceService) { }
 
   ngOnInit() {
     this.started = false;
@@ -29,9 +29,9 @@ letters = [
 ]
 onChange(player,route){
   if(player == 1)
-    this.player1M = route
+    this.gameConfig.player1Sprite = route
   else
-    this.player2M = route
+    this.gameConfig.player2Sprite = route
 }
 onChangeBs(boardSize){
   this.gameConfig.size = boardSize
@@ -43,17 +43,15 @@ player1M = ""
 player2M = ""
 
 startGame(){
-  this._router.navigate(["board",this.gameConfig.bgColor,
-    this.gameConfig.player1,
-    this.gameConfig.player2,
-    this.player1M,
-    this.player2M,
-  this.gameConfig.size]);
+  this._dataService.createNewGame({'config':this.gameConfig})
+  .subscribe((data)=>{this._router.navigate(["board",data['id']])})
 }
 
 started:boolean;
 
 gameConfig = {
+  player1Sprite:"",
+  player2Sprite:"",
   player1:"player 1",
   player2:"player 2",
   size:"",

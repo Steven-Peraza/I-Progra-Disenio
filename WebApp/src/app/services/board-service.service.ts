@@ -11,14 +11,22 @@ export class BoardServiceService {
 
   constructor(private http: HttpClient) { }
 
+getConfig(id:string):Observable<Object> {
 
+  return this.http.get(CONSTANTS.SERVER_ROUTE()+"/getGameConfig/"+id);
 
-getStatus(): Observable<Object> {
-  return this.http.get(CONSTANTS.SERVER_ROUTE()+"/gameStatus");
 }
 
-positionMarked(j, k) {
-return this.http.post(CONSTANTS.SERVER_ROUTE()+"/positionMarked",{"row":j,"column":k});
+getStatus(id:string): Observable<Object> {
+  return this.http.get(CONSTANTS.SERVER_ROUTE()+"/getGameStatus/"+id);
+}
+
+positionMarked(j, k,id) {
+return this.http.post(CONSTANTS.SERVER_ROUTE()+"/positionMarked",{"row":j,"column":k,"id":id});
+}
+
+createNewGame(gameConfig:any){
+return this.http.post(CONSTANTS.SERVER_ROUTE()+"/newGame",gameConfig)
 }
 
 }

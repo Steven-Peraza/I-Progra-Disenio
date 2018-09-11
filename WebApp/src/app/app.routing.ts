@@ -9,7 +9,7 @@ import { LoginComponent } from './login/login.component';
 
 const APP_ROUTES: Routes = [
   { path: 'home', component: PlayViewComponent },
-  {path: 'board/:bgColor/:player1/:player2/:p1Sprite/:p2Sprite/:size', component: BoardComponent},
+  {path: 'board/:id', component: BoardComponent},
   { path: '**', pathMatch: 'full', redirectTo: 'login' },
   { path: 'login', component: LoginComponent},
   { path: 'register', component: RegisterComponent},

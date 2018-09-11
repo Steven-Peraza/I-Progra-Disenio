@@ -22,14 +22,14 @@
                           <select (change)="onChange(1,$event.target.value)" id="player1M" class="form-control">
                             <option *ngFor="let letter of letters" [value]="letter[1]"> {{letter[0]}}</option>
                           </select>
-                          <img [src]="player1M" width="30px" class="img-rounded">
+                          <img [src]="gameConfig.player1Sprite" width="30px" class="img-rounded">
                         </div>
                     <div class="form-group col-md-4">
                       <label for="inputState">{{this.gameConfig.player2}} Mushroom</label>
                       <select (change)="onChange(2,$event.target.value)" id="player2M" class="form-control">
                         <option *ngFor="let letter of letters" [value]="letter[1]"> {{letter[0]}}</option>
                       </select>
-                      <img [src]="player2M" width="30px" class="img-rounded">
+                      <img [src]="gameConfig.player2Sprite" width="30px" class="img-rounded">
                     </div>
                   </div>
                   <div class="form-group col-md-4">

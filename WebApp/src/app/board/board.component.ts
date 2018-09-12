@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {BoardServiceService, GameStatus} from '../services/board-service.service';
 import { Observable } from 'rxjs';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-board',
@@ -9,8 +10,7 @@ import { Observable } from 'rxjs';
 })
 export class BoardComponent implements OnInit {
 
-
-  constructor(private _dataService:BoardServiceService) {
+  constructor(private _dataService: BoardServiceService, private modalService: NgbModal) {
 
    }
    ngOnInit(): void {
@@ -45,6 +45,7 @@ export class BoardComponent implements OnInit {
     };
    }
 
-
-
+   open(content) {
+    this.modalService.open(content);
+  }
   }

@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import {BoardServiceService, GameStatus} from '../services/board-service.service';
+import { ActivatedRoute } from "@angular/router";
 import { Observable } from 'rxjs';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
@@ -10,10 +11,17 @@ import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 })
 export class BoardComponent implements OnInit {
 
-  constructor(private _dataService: BoardServiceService, private modalService: NgbModal) {
+  constructor(private _dataService: BoardServiceService, private _route: ActivatedRoute, private modalService: NgbModal) {
 
    }
    ngOnInit(): void {
+    this.id = this._route.snapshot.paramMap.get('id');
+    this._dataService.getConfig(this.id)
+    .subscribe(
+      (data) => {
+        this.config = data;
+      }
+    );
     this.updateScreen();
    }
    currentStatus:GameStatus = { status: [],
@@ -22,16 +30,26 @@ export class BoardComponent implements OnInit {
    stat: 1, 
    win: 0,
    player: 2 };
+id:string = "-1"
+config:any = {
+  player1Sprite:"../../assets/img/mushroomsSprites/c.png",
+player2Sprite:"../../assets/img/mushroomsSprites/b.png",
+player1:"Jafeth",
+player2:"Steven",
+size:"8",
+bgColor:"darkgreen"
+}
+
 
    markPosition(j,k){
      console.log("Fila "+j+" "+"Columna "+k);
      //this.currentStatus["status"][j][k] = "W";
-    this._dataService.positionMarked(j,k)
+    this._dataService.positionMarked(j,k,this.id)
     .subscribe((res:GameStatus) => this.writeInfo(res));
    }
 
    updateScreen(){
-    this._dataService.getStatus()
+    this._dataService.getStatus(this.id)
     .subscribe((data: GameStatus) => this.writeInfo(data));
    }
 

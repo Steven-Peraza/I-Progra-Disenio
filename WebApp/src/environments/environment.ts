@@ -3,7 +3,15 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  firebase:{
+    apiKey: "AIzaSyDZ4AdomeS88IlNeQ7yaMXCdmJl54RopAc",
+    authDomain: "loginothello.firebaseapp.com",
+    databaseURL: "https://loginothello.firebaseio.com",
+    projectId: "loginothello",
+    storageBucket: "loginothello.appspot.com",
+    messagingSenderId: "419592530647"
+  },
 };
 
 /*

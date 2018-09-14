@@ -13,19 +13,22 @@ export default class GameState {
   winner: number; // player 1/2 o empate 3
   modoJuego: number; // 1 pvp o 2 pve
   dificultad: number;
+  config:any;
 
   // funcion que crea una nueva partida con un tamanyo variable, comenzando con el jugador 1
-  static nuevoJuego(tamanyo: number, modoJuego: number, dif: number): GameState {
-    return new GameState(new tablero(tamanyo), 1, modoJuego, dif);
+  static nuevoJuego(tamanio:number, modoJuego: number, dif: number,config:any): GameState {
+  
+    return new GameState(new tablero(tamanio), 1, modoJuego, dif,config);
   }
   // cada vez que se realiza un movimiento se crea un nuevo estado de juego
-  constructor(tablero: tablero, turn: number, modo: number, difi: number) {
+  constructor(tablero: tablero, turn: number, modo: number, difi: number,config) {
     this.tableroGS = tablero;
     this.turnoJugador = turn;
     this.puntaje = tablero.getScore();
     this.posiblesJugadas = tablero.getPosiblesJugadas(turn);
     this.modoJuego = modo;
     this.dificultad = difi;
+    this.config = config
   // si no hay posibles jugadas, game over... si no, se continua jugando...
     if (this.posiblesJugadas.length > 0) {
       this.gameStatus = 1;
@@ -52,12 +55,12 @@ export default class GameState {
       if ((this.turnoJugador == 1) && (this.cambioTurno(movimiento))){
         return new GameState(
           this.tableroGS.movida(movimiento, 1),
-          2, this.modoJuego, this.dificultad
+          2, this.modoJuego, this.dificultad,this.config
         )
       } else if ((this.turnoJugador == 2) && (this.cambioTurno(movimiento))) {
         return new GameState(
           this.tableroGS.movida(movimiento, 2),
-          1, this.modoJuego, this.dificultad
+          1, this.modoJuego, this.dificultad, this.config
         )
       } else {
         return this;
@@ -68,7 +71,7 @@ export default class GameState {
         console.log("Turno Player");
         return new GameState(
           this.tableroGS.movida(movimiento, 1),
-          2, this.modoJuego, this.dificultad
+          2, this.modoJuego, this.dificultad, this.config
         )
       }
       else if (this.turnoJugador == 2){
@@ -77,7 +80,7 @@ export default class GameState {
         //console.log(AI.getJugada());
         return new GameState(
           this.tableroGS.movida(AI.getJugada(), 2),
-          1, this.modoJuego, this.dificultad
+          1, this.modoJuego, this.dificultad, this.config
         )
       }
       else {

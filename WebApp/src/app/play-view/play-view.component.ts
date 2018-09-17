@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
 import { BoardServiceService } from "../services/board-service.service";
+import { ProfilesServiceService } from '../services/profiles-service.service';
 @Component({
   selector: 'app-play-view',
   templateUrl: './play-view.component.html',
@@ -8,11 +9,20 @@ import { BoardServiceService } from "../services/board-service.service";
 })
 export class PlayViewComponent implements OnInit {
 
-  constructor(private _router:Router,private _dataService:BoardServiceService) { }
+  constructor(private _router:Router,private _dataService:BoardServiceService, private _profileService:ProfilesServiceService) { }
 
   ngOnInit() {
     this.started = false;
+    this._profileService.getUser()
+    .subscribe(
+      (user:firebase.User)=>{
+        this.user = user
+        console.log(user)
+      }
+    )
   }
+
+  user:firebase.User = null
 letters = [
   ["Rojo", "../../assets/img/mushroomsSprites/a.png"],
   ["Verde", "../../assets/img/mushroomsSprites/b.png"],

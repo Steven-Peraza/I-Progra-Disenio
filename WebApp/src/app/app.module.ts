@@ -26,6 +26,8 @@ import { LoginComponent } from './login/login.component';
 import {environment} from '../environments/environment';
 import { RegisterComponent } from './register/register.component'
 import { PopComponent } from './pop/pop.component';
+import { ProfilesServiceService } from './services/profiles-service.service';
+import { AuthGuardService } from './services/auth-guard.service';
 
 @NgModule({
   declarations: [
@@ -47,7 +49,7 @@ import { PopComponent } from './pop/pop.component';
     AngularFireAuthModule,
     ReactiveFormsModule
   ],
-  providers: [BoardServiceService],
+  providers: [BoardServiceService, ProfilesServiceService, AuthGuardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

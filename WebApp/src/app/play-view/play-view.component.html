@@ -18,7 +18,7 @@
                   </div>
                   <div class="form-row">
                       <div class="form-group col-md-4">
-                          <label for="inputState">{{this.gameConfig.player1}} Mushroom</label>
+                          <label for="inputState">{{this.user.displayName}} Mushroom</label>
                           <select (change)="onChange(1,$event.target.value)" id="player1M" class="form-control">
                             <option *ngFor="let letter of letters" [value]="letter[1]"> {{letter[0]}}</option>
                           </select>

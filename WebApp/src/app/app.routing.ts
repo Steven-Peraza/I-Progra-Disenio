@@ -6,10 +6,11 @@ import { BoardComponent } from './board/board.component';
 import { PlayViewComponent } from "./play-view/play-view.component";
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
+import { AuthGuardService } from './services/auth-guard.service';
 
 const APP_ROUTES: Routes = [
-  { path: 'home', component: PlayViewComponent },
-  {path: 'board/:id', component: BoardComponent},
+  { path: 'home', component: PlayViewComponent, canActivate: [AuthGuardService] },
+  {path: 'board/:id', component: BoardComponent, canActivate: [AuthGuardService]},
   { path: '**', pathMatch: 'full', redirectTo: 'login' },
   { path: 'login', component: LoginComponent},
   { path: 'register', component: RegisterComponent},

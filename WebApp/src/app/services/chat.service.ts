@@ -4,10 +4,9 @@ import { map } from 'rxjs/operators';
 import { Mensaje } from '../interface/mensaje.interface';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { auth } from 'firebase';
+import { ProfilesServiceService } from './profiles-service.service';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class ChatService {
 
   private itemsCollection: AngularFirestoreCollection<Mensaje>;
@@ -16,10 +15,10 @@ export class ChatService {
   public usuario: any = {};
 
 
-  constructor( public afAuth: AngularFireAuth,
-    private afs: AngularFirestore ) {
+  constructor( private _authService: ProfilesServiceService,
+  private afs: AngularFirestore ) {
 
-      this.afAuth.authState.subscribe(user => {
+      this._authService._firebaseAuth.authState.subscribe(user => {
         console.log('US: ', user);
         if (!user) {
           return;
@@ -45,14 +44,6 @@ export class ChatService {
           }
           return this.chats;
         }));
-  }
-
-  login() {
-    this.afAuth.auth.signInWithPopup(new auth.GoogleAuthProvider());
-  }
-  logout() {
-    this.usuario = {};
-    this.afAuth.auth.signOut();
   }
 
   newMessage( texto: string) {

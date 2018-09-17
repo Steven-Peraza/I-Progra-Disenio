@@ -12,7 +12,7 @@ import { ChatComponent } from './chat/chat.component';
 const APP_ROUTES: Routes = [
   { path: 'home', component: PlayViewComponent },
   { path: 'board/:id', component: BoardComponent},
-  { path: 'matches', component: ChatComponent},
+  { path: 'matches', component: MatchmakingComponent},
   { path: '**', pathMatch: 'full', redirectTo: 'login' },
   { path: 'login', component: LoginComponent},
   { path: 'register', component: RegisterComponent},

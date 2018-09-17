@@ -8,7 +8,5 @@ import { ChatService } from '../app/services/chat.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  constructor(public _cs: ChatService) {
-  }
   title = 'app';
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 import { ChatService } from '../services/chat.service';
 
 
@@ -7,12 +7,9 @@ import { ChatService } from '../services/chat.service';
   templateUrl: './matchmaking.component.html',
   styleUrls: ['./matchmaking.component.css']
 })
-export class MatchmakingComponent implements OnInit {
+export class MatchmakingComponent {
 
-  constructor() {
-  }
-
-  ngOnInit() {
+  constructor(public _cs: ChatService) {
   }
 
 }

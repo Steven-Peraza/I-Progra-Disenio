@@ -7,5 +7,5 @@ export const environment = {
     projectId: "stevensgamesdesign",
     storageBucket: "stevensgamesdesign.appspot.com",
     messagingSenderId: "1070643824927"
-  },
+  }
 };

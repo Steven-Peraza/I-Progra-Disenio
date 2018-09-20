@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ProfilesServiceService } from '../services/profiles-service.service'
+import { ProfilesServiceService } from '../services/profiles-service.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -7,38 +7,37 @@ import { ProfilesServiceService } from '../services/profiles-service.service'
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private _authService:ProfilesServiceService) { }
+  constructor(private _authService: ProfilesServiceService) { }
 
   ngOnInit() {
     this._authService.getUser()
     .subscribe(
-      data=>{
-        console.log(data)
+      data => {
+        console.log(data);
       }
-    )
+    );
   }
 
-  user:any = null
+  user:any = null;
 
-  signInWithFacebook(){
+  signInWithFacebook() {
     this.user = this._authService.signInWithFacebook()
     .then(
-      data=>{
-        this.user = data
-        console.log(this.user)
+      data => {
+        this.user = data;
+        console.log(this.user);
       }
     );
   }
 
-  signInWithGoogle(){
+  signInWithGoogle() {
     this._authService.signInWithGoogle()
     .then(
-      data=>{
-        this.user = data.user.displayName
-        console.log(this._authService.getUser())
+      data => {
+        this.user = data.user.displayName;
+        console.log(this._authService.getUser());
       }
     );
-    
   }
 
 }

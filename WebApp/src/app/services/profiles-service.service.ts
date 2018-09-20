@@ -11,27 +11,30 @@ export class ProfilesServiceService {
   private static user: firebase.auth.UserCredential
 
   constructor(
-    private _firebaseAuth: AngularFireAuth,
-    private _router: Router
+    public _firebaseAuth: AngularFireAuth
   ) { }
 
   signInWithFacebook() {
     return this._firebaseAuth.auth.signInWithPopup(
       new firebase.auth.FacebookAuthProvider()
-    )
+    );
   }
   signInWithGoogle() {
     return this._firebaseAuth.auth.signInWithPopup(
       new firebase.auth.GoogleAuthProvider()
-    )
+    );
   }
 
   getUser() {
     return this._firebaseAuth.user
   }
 
-  getAuthState(){
-    return this._firebaseAuth.authState
+  get currentUserObservable(): any {
+    return this._firebaseAuth.auth
+  }
+
+  getAuthState():boolean{
+    return this._firebaseAuth.authState !== null
   }
 
   doRegister(value) {

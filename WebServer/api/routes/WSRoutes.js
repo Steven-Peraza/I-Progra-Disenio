@@ -15,4 +15,8 @@ module.exports = function(app) {
   app.route('/getGameConfig/:id')
   .get(gameServer.getGameConfig)
 
+  app.route("/sayHello")
+    .post(gameServer.sayHello)
+  
+
 };

@@ -7,6 +7,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AngularFireStorageModule } from '@angular/fire/storage';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 
 
@@ -15,7 +17,7 @@ import { APP_ROUTING } from './app.routing';
 
 // Services
 import {BoardServiceService} from './services/board-service.service';
-
+import { ChatService } from './services/chat.service';
 
 
 // Components
@@ -24,10 +26,12 @@ import { BoardComponent } from './board/board.component';
 import { PlayViewComponent } from './play-view/play-view.component';
 import { LoginComponent } from './login/login.component';
 import {environment} from '../environments/environment';
-import { RegisterComponent } from './register/register.component'
+import { RegisterComponent } from './register/register.component';
 import { PopComponent } from './pop/pop.component';
 import { ProfilesServiceService } from './services/profiles-service.service';
 import { AuthGuardService } from './services/auth-guard.service';
+import { ChatComponent } from './chat/chat.component';
+import { MatchmakingComponent } from './matchmaking/matchmaking.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +40,9 @@ import { AuthGuardService } from './services/auth-guard.service';
     PlayViewComponent,
     LoginComponent,
     RegisterComponent,
-    PopComponent
+    PopComponent,
+    MatchmakingComponent,
+    ChatComponent
   ],
   imports: [
     BrowserModule,
@@ -47,9 +53,16 @@ import { AuthGuardService } from './services/auth-guard.service';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireAuthModule,
+    AngularFireStorageModule,
     ReactiveFormsModule
   ],
-  providers: [BoardServiceService, ProfilesServiceService, AuthGuardService],
+  providers: [
+    BoardServiceService,
+    ChatService,
+    AngularFireAuth,
+    ProfilesServiceService,
+    AuthGuardService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

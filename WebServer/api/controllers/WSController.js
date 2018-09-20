@@ -21,6 +21,11 @@ exports.newGame = function(req,res){
 
 }
 
+exports.sayHello = function(req,res){
+var nombre = req.body["nombre"];
+res.send({saludo:"Hola "+nombre})
+}
+
 exports.positionMarked = function(req, res) {
     //console.log("Antes" + sd.tableroGS.cambioTurno);
     var game = sesiones[req.body["id"]]

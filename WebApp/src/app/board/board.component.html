@@ -1,18 +1,53 @@
-<h1>Turno Actual: Jugador {{ currentStatus.player }}</h1>
-<div class="container">
-  <div class="table-responsive">
-    <div *ngFor="let row of currentStatus.status; let j = index" class="col-md" >
-      <div class="row">
-        <div *ngFor="let col of row; let k = index" [ngStyle]="{'background':config.bgColor}" class="celda card" 
-        (click)="markPosition(j,k)">
-          <img *ngIf="col.player=='1'" [src]="config.player1Sprite"  width="100px" class="img-rounded">
-          <img *ngIf="col.player=='2'" [src]="config.player2Sprite" width="100px" class="img-rounded">
+<div class="table-light">
+    <div class="row">
+        <div class="col-sm-7">
+            <h4>Turno Actual: Jugador {{ currentStatus.player }}</h4>
         </div>
+        <div class="col-sm-1">
+            <h4>Puntaje:</h4>
+        </div>
+        <div class="col-sm-3">
+            <div class="row">
+                <h4>Jugador 1 {{currentStatus.score[0]}}</h4>
+            </div>
+            <div class="row">
+                <h4>Jugador 2 {{currentStatus.score[1]}}</h4>
+            </div>
+        </div>
+
     </div>
 </div>
-<h3>Puntaje {{config.player1}} {{currentStatus.score[0]}} {{config.player2}} {{currentStatus.score[1]}}</h3>
-<div *ngIf="currentStatus.stat==2">
-    <h1>RIP Game!
-    </h1>
-    <h2>Ganador: {{ currentStatus.win }}</h2>
-</div>
+
+
+<div class="container">
+    <div class="table-responsive">
+        <div *ngFor="let row of currentStatus.status; let j = index" class="col-md">
+            <div class="row">
+                <div *ngFor="let col of row; let k = index" [ngStyle]="{'background':config.bgColor}" class="celda card" (click)="markPosition(j,k)">
+                    <img *ngIf="col.player=='1'" [src]="config.player1Sprite" width="100px" class="img-rounded">
+                    <img *ngIf="col.player=='2'" [src]="config.player2Sprite" width="100px" class="img-rounded">
+                </div>
+            </div>
+        </div>
+
+        <ng-template #content let-c="close" let-d="dismiss">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modal-basic-title">Game Over!</h4>
+                <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+            </div>
+            <div class="modal-body">
+                <p>Ganador! {{ currentStatus.stat }} </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark" (click)="c('Save click')">Volver al menu</button>
+            </div>
+        </ng-template>
+
+
+        <div *ngIf="currentStatus.stat != 2; else open(content)">
+            <h1>RIP Game!
+            </h1>
+            <h2>Ganador: {{ currentStatus.win }}</h2>
+        </div>

@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import {BoardServiceService, GameStatus} from '../services/board-service.service';
 import { ActivatedRoute } from "@angular/router";
 import { Observable } from 'rxjs';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-board',
@@ -9,18 +10,18 @@ import { Observable } from 'rxjs';
   styleUrls: ['./board.component.css']
 })
 export class BoardComponent implements OnInit {
-  constructor(private _dataService:BoardServiceService, private _route:ActivatedRoute) {
-    
+
+  constructor(private _dataService: BoardServiceService, private _route: ActivatedRoute, private modalService: NgbModal) {
 
    }
    ngOnInit(): void {
-    this.id= this._route.snapshot.paramMap.get('id');
+    this.id = this._route.snapshot.paramMap.get('id');
     this._dataService.getConfig(this.id)
     .subscribe(
-      (data)=>{
-        this.config = data
+      (data) => {
+        this.config = data;
       }
-    )
+    );
     this.updateScreen();
    }
    currentStatus:GameStatus = { status: [],
@@ -62,6 +63,7 @@ bgColor:"darkgreen"
     };
    }
 
-
-
+   open(content) {
+    this.modalService.open(content);
+  }
   }

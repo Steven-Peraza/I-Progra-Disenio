@@ -30,6 +30,15 @@
             </div>
         </div>
 
+        <div *ngIf="currentStatus.stat == 2; then updateStats();">
+            <h1>RIP Game!
+            </h1>
+            <h2>Ganador: {{ currentStatus.win }}</h2>
+        </div>
+
+
+        <!-->
+
         <ng-template #content let-c="close" let-d="dismiss">
             <div class="modal-header">
                 <h4 class="modal-title" id="modal-basic-title">Game Over!</h4>
@@ -50,4 +59,4 @@
             <h1>RIP Game!
             </h1>
             <h2>Ganador: {{ currentStatus.win }}</h2>
-        </div>
+        </div> -->

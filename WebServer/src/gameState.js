@@ -3,7 +3,7 @@
 exports.__esModule = true;
 var tablero_1 = require("./tablero");
 var AIPlayer_1 = require("./AIPlayer");
-var GameState = (function () {
+var GameState = /** @class */ (function () {
     // cada vez que se realiza un movimiento se crea un nuevo estado de juego
     function GameState(tablero, turn, modo, difi, config) {
         this.tableroGS = tablero;
@@ -13,6 +13,8 @@ var GameState = (function () {
         this.modoJuego = modo;
         this.dificultad = difi;
         this.config = config;
+        this.uids = [config['player1uid'], config['player2uid']];
+        console.log("ASD" + this.uids);
         // si no hay posibles jugadas, game over... si no, se continua jugando...
         if (this.posiblesJugadas.length > 0) {
             this.gameStatus = 1;
@@ -35,6 +37,7 @@ var GameState = (function () {
     }
     // funcion que crea una nueva partida con un tamanyo variable, comenzando con el jugador 1
     GameState.nuevoJuego = function (tamanio, modoJuego, dif, config) {
+        console.log("asdjh" + config['player1']);
         return new GameState(new tablero_1["default"](tamanio), 1, modoJuego, dif, config);
     };
     // funcion que se encarga de realizar la jugada y crear un nuevo estado de juego
@@ -84,7 +87,8 @@ var GameState = (function () {
             score: this.puntaje,
             stat: this.gameStatus,
             win: this.winner,
-            player: this.turnoJugador
+            player: this.turnoJugador,
+            uids: this.uids
         };
     };
     GameState.prototype.getJugadas = function () {

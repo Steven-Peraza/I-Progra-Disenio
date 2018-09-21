@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-var AIPlayer = (function () {
+var AIPlayer = /** @class */ (function () {
     function AIPlayer(dificultadSelec, stateAct) {
         this.dificultad = dificultadSelec;
         this.GS = stateAct;
@@ -13,7 +13,7 @@ var AIPlayer = (function () {
         var mejotJugadaV2;
         posiblesJugadasAI = this.GS.getJugadas();
         switch (this.dificultad) {
-            case 1:// facil
+            case 1: // facil
                 melhorjogada = 100;
                 for (var _i = 0, posiblesJugadasAI_1 = posiblesJugadasAI; _i < posiblesJugadasAI_1.length; _i++) {
                     var posibleJugAct = posiblesJugadasAI_1[_i];
@@ -24,11 +24,11 @@ var AIPlayer = (function () {
                     }
                 }
                 break;
-            case 2://medium
+            case 2: //medium
                 melhorjogada = Math.floor(Math.random() * posiblesJugadasAI.length) + 1;
                 mejotJugadaV2 = posiblesJugadasAI[melhorjogada].getPos();
                 break;
-            case 3:// c mamo
+            case 3: // c mamo
                 for (var _a = 0, posiblesJugadasAI_2 = posiblesJugadasAI; _a < posiblesJugadasAI_2.length; _a++) {
                     var posibleJugAct = posiblesJugadasAI_2[_a];
                     cantPiezasAMover = this.GS.tableroGS.getPiezasACambiar(posibleJugAct);

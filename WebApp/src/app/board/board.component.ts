@@ -3,6 +3,10 @@ import {BoardServiceService, GameStatus} from '../services/board-service.service
 import { ActivatedRoute } from "@angular/router";
 import { Observable } from 'rxjs';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { ProfilesServiceService } from '../services/profiles-service.service';
+import { Profile } from '../interface/profile.interface';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-board',
@@ -11,8 +15,11 @@ import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 })
 export class BoardComponent implements OnInit {
 
-  constructor(private _dataService: BoardServiceService, private _route: ActivatedRoute, private modalService: NgbModal) {
+  public itemsCollection: AngularFirestoreCollection<Profile>;
+  public acm1pt$: Observable<Profile[]>;
 
+  constructor(private _dataService: BoardServiceService, private _route: ActivatedRoute, private modalService: NgbModal,
+    private _authService: ProfilesServiceService, private afs: AngularFirestore) {
    }
    ngOnInit(): void {
     this.id = this._route.snapshot.paramMap.get('id');
@@ -29,7 +36,8 @@ export class BoardComponent implements OnInit {
    score: 200,
    stat: 1, 
    win: 0,
-   player: 2 };
+   player: 2,
+   uids:["Ernie","Bert"]};
 id:string = "-1"
 config:any = {
   player1Sprite:"../../assets/img/mushroomsSprites/c.png",
@@ -41,29 +49,51 @@ bgColor:"darkgreen"
 }
 
 
-   markPosition(j,k){
-     console.log("Fila "+j+" "+"Columna "+k);
+   markPosition(j, k) {
+     console.log("Fila " + j + " " + "Columna " + k);
      //this.currentStatus["status"][j][k] = "W";
-    this._dataService.positionMarked(j,k,this.id)
-    .subscribe((res:GameStatus) => this.writeInfo(res));
+    this._dataService.positionMarked(j, k, this.id)
+    .subscribe((res: GameStatus) => this.writeInfo(res));
    }
 
-   updateScreen(){
+   updateScreen() {
     this._dataService.getStatus(this.id)
     .subscribe((data: GameStatus) => this.writeInfo(data));
    }
 
-   writeInfo(data:GameStatus){
+   writeInfo(data: GameStatus) {
     this.currentStatus = {
       status: data['board'],
       score: data['score'],
       stat: data['stat'],
       win: data['win'],
-      player: data['player']
+      player: data['player'],
+      uids: data['uids']
     };
    }
 
    open(content) {
     this.modalService.open(content);
+  }
+
+  updateStats() {
+    let newStat: number[];
+    this.itemsCollection = this.afs.collection<Profile>('profiles', ref => ref.where('uid', '==', this.currentStatus.uids[0]));
+    this.itemsCollection.doc(this.itemsCollection.ref.id).ref.get().then(function(doc) {
+      if (doc.exists) {
+          console.log("Document data:", doc.data());
+      } else {
+          console.log("No such document!");
+      }
+    }).catch(function(error) {
+        console.log("Error getting document:", error);
+    });
+/*
+    this.afs.doc(this.itemsCollection.ref.id).update({
+      ganados: this.acm1pt$.ganados,
+      perdidos: this.acm1pt$.perdidos,
+      empatados: this.acm1pt$.empatados
+    });
+*/
   }
   }

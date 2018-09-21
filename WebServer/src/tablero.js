@@ -2,7 +2,7 @@
 exports.__esModule = true;
 // importaciones necesarias para el funcionamiento adecuado de la clase
 var pieza_1 = require("./pieza");
-var tablero = (function () {
+var tablero = /** @class */ (function () {
     // constructor que recibe el tamanyo del tablero como parametro
     function tablero(size) {
         this.Directions = [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]];
@@ -143,9 +143,11 @@ var tablero = (function () {
             if (this.campoVacio(fila, col)) {
                 return false;
             }
+            // si se encontro con una pieza del mismo color se retorna una bandera que indica si se encontro una pieza de otro color...
             else if (this.tableroJuego[fila][col].getPlayer() === newPieza.getPlayer()) {
                 return fichaOtroColor;
             }
+            // si se encontro con una ficha del color contrario, se cambia la bandera y el movimiento en esa direccion es legal
             else {
                 fichaOtroColor = true;
             }

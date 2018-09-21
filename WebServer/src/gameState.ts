@@ -14,21 +14,24 @@ export default class GameState {
   modoJuego: number; // 1 pvp o 2 pve
   dificultad: number;
   config:any;
+  uids: string[];
 
   // funcion que crea una nueva partida con un tamanyo variable, comenzando con el jugador 1
-  static nuevoJuego(tamanio:number, modoJuego: number, dif: number,config:any): GameState {
-  
-    return new GameState(new tablero(tamanio), 1, modoJuego, dif,config);
+  static nuevoJuego(tamanio:number, modoJuego: number, dif: number, config:any): GameState {
+    console.log("asdjh"+config['player1']);
+    return new GameState(new tablero(tamanio), 1, modoJuego, dif, config);
   }
   // cada vez que se realiza un movimiento se crea un nuevo estado de juego
-  constructor(tablero: tablero, turn: number, modo: number, difi: number,config) {
+  constructor(tablero: tablero, turn: number, modo: number, difi: number, config: any) {
     this.tableroGS = tablero;
     this.turnoJugador = turn;
     this.puntaje = tablero.getScore();
     this.posiblesJugadas = tablero.getPosiblesJugadas(turn);
     this.modoJuego = modo;
     this.dificultad = difi;
-    this.config = config
+    this.config = config;
+    this.uids = [config['player1uid'],config['player2uid']];
+    console.log("ASD"+this.uids);
   // si no hay posibles jugadas, game over... si no, se continua jugando...
     if (this.posiblesJugadas.length > 0) {
       this.gameStatus = 1;
@@ -105,7 +108,8 @@ export default class GameState {
       score: this.puntaje, 
       stat: this.gameStatus, 
       win: this.winner,
-      player: this.turnoJugador
+      player: this.turnoJugador,
+      uids: this.uids
     };
   }
 

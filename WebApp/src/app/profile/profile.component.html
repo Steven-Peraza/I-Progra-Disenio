@@ -1,0 +1,35 @@
+<h1>
+    Perfil del Jugador
+</h1>
+<ul>
+    <li>
+        <p>
+            Nombre del Jugador: {{usuario.nombre}}
+        </p>
+    </li>
+
+    <li>
+        <p>
+            Email: {{usuario.email}}
+        </p>
+    </li>
+</ul>
+
+
+<ul *ngFor="let post of acm1pt | async">
+    <li>
+        <p>Nivel del Jugador: {{ post.nivel}}</p>
+    </li>
+    <li>
+        <p>Partidas Ganadas: {{ post.ganados}}</p>
+    </li>
+    <li>
+        <p>Partidas Perdidas: {{ post.perdidos}}</p>
+    </li>
+    <li>
+        <p>Partidas Empatadas: {{ post.empatados}}</p>
+    </li>
+</ul>
+
+
+<img [src]="usuario.foto" alt="">

@@ -33,6 +33,7 @@ import { ProfilesServiceService } from './services/profiles-service.service';
 import { AuthGuardService } from './services/auth-guard.service';
 import { ChatComponent } from './chat/chat.component';
 import { MatchmakingComponent } from './matchmaking/matchmaking.component';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { MatchmakingComponent } from './matchmaking/matchmaking.component';
     RegisterComponent,
     PopComponent,
     MatchmakingComponent,
-    ChatComponent
+    ChatComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,

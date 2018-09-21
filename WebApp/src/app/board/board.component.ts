@@ -38,14 +38,20 @@ export class BoardComponent implements OnInit {
    win: 0,
    player: 2,
    uids:["Ernie","Bert"]};
+
 id:string = "-1"
+
 config:any = {
-  player1Sprite:"../../assets/img/mushroomsSprites/c.png",
-player2Sprite:"../../assets/img/mushroomsSprites/b.png",
-player1:"Jafeth",
-player2:"Steven",
-size:"8",
-bgColor:"darkgreen"
+  "gameMode": "1",
+  "dificultad": 1,
+  "player1Sprite": "../../assets/img/mushroomsSprites/b.png",
+  "player2Sprite": "../../assets/img/mushroomsSprites/c.png",
+  "player1": "jafeth Vásquez",
+  "player1uid": "ABTtsOaH2Le5zsR6Ey5GkDezt8s1",
+  "player2uid": "AIPlayer",
+  "player2": "AI Player",
+  "size": "8",
+  "bgColor": "green"
 }
 
 

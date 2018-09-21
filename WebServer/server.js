@@ -1,6 +1,6 @@
 var express = require('express'),
   app = express(),
-  port = process.env.PORT || 3000;
+  port = process.env.PORT || 3000
 
 app.listen(port);
 bodyParser = require('body-parser');
@@ -11,6 +11,9 @@ app.use(bodyParser.json());
 
 var routes = require('./api/routes/WSRoutes'); //importing route
 routes(app); //register the route
+
+var webSocket = require('./api/routes/webSocket')
+webSocket()
 
 
 console.log('Game API server started on: ' + port);

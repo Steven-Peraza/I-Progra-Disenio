@@ -18,6 +18,7 @@ import { APP_ROUTING } from './app.routing';
 // Services
 import {BoardServiceService} from './services/board-service.service';
 import { ChatService } from './services/chat.service';
+import {MultiplayerService} from './services/web-socket.service'
 
 
 // Components
@@ -61,7 +62,8 @@ import { MatchmakingComponent } from './matchmaking/matchmaking.component';
     ChatService,
     AngularFireAuth,
     ProfilesServiceService,
-    AuthGuardService
+    AuthGuardService,
+    MultiplayerService
   ],
   bootstrap: [AppComponent]
 })

@@ -46,7 +46,7 @@
         </ng-template>
 
 
-        <div *ngIf="currentStatus.stat != 2; else open(content)">
+        <div *ngIf="currentStatus.stat != 2">
             <h1>RIP Game!
             </h1>
             <h2>Ganador: {{ currentStatus.win }}</h2>

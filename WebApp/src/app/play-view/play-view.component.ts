@@ -4,6 +4,7 @@ import { BoardServiceService } from '../services/board-service.service';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { ProfilesServiceService } from '../services/profiles-service.service';
 import { Profile } from '../interface/profile.interface';
+import { MultiplayerService } from '../services/web-socket.service';
 
 @Component({
   selector: 'app-play-view',
@@ -45,7 +46,9 @@ export class PlayViewComponent implements OnInit {
   bgColor:'green'
 };
 
-  constructor(private _router: Router, private _dataService: BoardServiceService,
+connection;
+
+  constructor(private sck:MultiplayerService ,private _router: Router, private _dataService: BoardServiceService,
     private _authService: ProfilesServiceService, private afs: AngularFirestore) {
       this._authService._firebaseAuth.authState.subscribe(user => {
 
@@ -102,11 +105,15 @@ onChangeDif(dificultad) {
   }
 }
 
-
 startGame() {
+  if(this.gameConfig.gameMode == 3){
+  this.sck.createMatch(this.gameConfig);
+  this._router.navigate(["board","mp"]);
+  }else{
   console.log(this.gameConfig);
   this._dataService.createNewGame({'config': this.gameConfig})
   .subscribe((data) => { this._router.navigate(["board", data['id']]); });
+  }
 }
 
 

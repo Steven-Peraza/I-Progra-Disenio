@@ -1,31 +1,29 @@
 var sesiones = new Array();
 
 
-exports.getGamesStatus = function(req, res) {
+exports.getGamesStatus = (req, res)=>{
+    console.log("hola?");
     var game2 = sesiones[parseInt(req.params.id)];
     res.json(game2.dataAct());
 };
 
-exports.getGameConfig = function(req, res) {
+exports.getGameConfig = (req, res)=>{
     var game2 = sesiones[parseInt(req.params.id)];
     res.json(game2.config);
 }
 
-exports.newGame = function(req, res) {
+exports.newGame = (req, res)=>{
     var newGame = require('../../src/gameState');
     var config = req.body['config'];
+    console.log('New' + config['player1uid']);
     var newGameState = newGame["default"].nuevoJuego(parseInt(config['size']), parseInt(config['gameMode']), parseInt(config['dificultad']), config);
     sesiones.push(newGameState);
     res.json({ "id": sesiones.length - 1 });
 
 }
 
-exports.sayHello = function(req, res) {
-    var nombre = req.body["nombre"];
-    res.send({ saludo: "Hola " + nombre })
-}
 
-exports.positionMarked = function(req, res) {
+exports.positionMarked = (req, res)=>{
     //console.log("Antes" + sd.tableroGS.cambioTurno);
     var game = sesiones[req.body["id"]];
     /*if (game.modoJuego == 1) {

@@ -7,10 +7,10 @@
             <th>Jugador En Espera</th>
             <th></th>
         </tr>
-        <tr>
-            <td>11</td>
-            <td>Son Goku</td>
-            <td><button class="btn btn-primary">Unirse</button></td>
+        <tr *ngFor="let match of this.matches">
+            <td>{{match.id}}</td>
+            <td>{{match.player1}}</td>
+            <td><button (click)="joinMatch(match.id)" class="btn btn-primary">Unirse</button></td>
         </tr>
     </table>
 </div>

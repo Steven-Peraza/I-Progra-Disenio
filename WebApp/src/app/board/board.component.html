@@ -1,44 +1,52 @@
-<div class="table-light">
-    <div class="row">
-        <div class="col-sm-7">
-            <h4 *ngIf="currentStatus.player == 1">Turno Actual: {{ config['player1'] }}</h4>
-            <h4 *ngIf="currentStatus.player == 2">Turno Actual: {{ config['player2'] }}</h4>
-            <div *ngIf="currentStatus.stat == 2;">
-                <h4>Juego Terminado!</h4>
-                <h4 *ngIf="currentStatus.win == 1">Ganador: {{ config['player1'] }}</h4>
-                <h4 *ngIf="currentStatus.win == 2">Ganador: {{ config['player2'] }}</h4>
-                <h4 *ngIf="currentStatus.win == 3">Empate! Vaya...</h4>
+{{this.config.state}}
+<div *ngIf="this.state == 'EnProceso'">
+    <div class="table-light">
+        <div class="row">
+            <div class="col-sm-7">
+                <h4 *ngIf="currentStatus.player == 1">Turno Actual: {{ config['player1'] }}</h4>
+                <h4 *ngIf="currentStatus.player == 2">Turno Actual: {{ config['player2'] }}</h4>
+                <div *ngIf="currentStatus.stat == 2;">
+                    <h4>Juego Terminado!</h4>
+                    <h4 *ngIf="currentStatus.win == 1">Ganador: {{ config['player1'] }}</h4>
+                    <h4 *ngIf="currentStatus.win == 2">Ganador: {{ config['player2'] }}</h4>
+                    <h4 *ngIf="currentStatus.win == 3">Empate! Vaya...</h4>
+                </div>
             </div>
-        </div>
-        <div class="col-sm-1">
-            <h4>Puntaje:</h4>
-        </div>
-        <div class="col-sm-3">
-            <div class="row">
-                <h4>{{ config['player1'] }}: {{currentStatus.score[0]}}</h4>
+            <div class="col-sm-1">
+                <h4>Puntaje:</h4>
             </div>
-            <div class="row">
-                <h4>{{ config['player2'] }}: {{currentStatus.score[1]}}</h4>
+            <div class="col-sm-3">
+                <div class="row">
+                    <h4>{{ config['player1'] }}: {{currentStatus.score[0]}}</h4>
+                </div>
+                <div class="row">
+                    <h4>{{ config['player2'] }}: {{currentStatus.score[1]}}</h4>
+                </div>
             </div>
-        </div>
 
-        <div class="col-sm-3">
+            <!--<div class="col-sm-3">
             <button (click)="turnoAI();">Siguiente Turno</button>
+        </div>-->
+
         </div>
-
     </div>
-</div>
 
 
-<div class="container">
-    <div class="table-responsive">
-        <div *ngFor="let row of currentStatus.status; let j = index" class="col-md">
-            <div class="row">
-                <div *ngFor="let col of row; let k = index" [ngStyle]="{'background':config.bgColor}" class="celda card" (click)="markPosition(j,k)">
-                    <img *ngIf="col.player=='1'" [src]="config.player1Sprite" width="100px" class="img-rounded">
-                    <img *ngIf="col.player=='2'" [src]="config.player2Sprite" width="100px" class="img-rounded">
+    <div class="container">
+        <div class="table-responsive">
+            <div *ngFor="let row of currentStatus.status; let j = index" class="col-md">
+                <div class="row">
+                    <div *ngFor="let col of row; let k = index" [ngStyle]="{'background':config.bgColor}" class="celda card" (click)="markPosition(j,k)">
+                        <img *ngIf="col.player=='1'" [src]="config.player1Sprite" width="100px" class="img-rounded">
+                        <img *ngIf="col.player=='2'" [src]="config.player2Sprite" width="100px" class="img-rounded">
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
+
+<div class="text-center" *ngIf="this.state == 'MultijugadorEnEspera'">
+    <img src="../../assets/img/charging.gif" />
+    <h1>Esperando Oponente</h1>
 </div>

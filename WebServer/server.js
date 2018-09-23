@@ -1,19 +1,21 @@
-var express = require('express'),
-  app = express(),
-  port = process.env.PORT || 3000
+//Dependencias
+const express = require('express')
+const app = express()
+const http = require('http').createServer(app);
+var socket = require('./api/routes/webSocket')
+var routes = require("./api/routes/WSRoutes")
+var cors = require("cors")
 
-app.listen(port);
-bodyParser = require('body-parser');
-var cors = require('cors')
-app.use(bodyParser.urlencoded({ extended: true }));
+//Variables Globales
+
+
+
+app.use(express.json())
 app.use(cors())
-app.use(bodyParser.json());
+routes(app)
+socket(http)
 
-var routes = require('./api/routes/WSRoutes'); //importing route
-routes(app); //register the route
+http.listen(3000, () => {
+  console.log('Server started on port 3000');
+});
 
-var webSocket = require('./api/routes/webSocket')
-webSocket()
-
-
-console.log('Game API server started on: ' + port);

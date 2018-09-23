@@ -3,8 +3,7 @@ module.exports = function(app) {
   var gameServer = require('../controllers/WSController');
   //var CONSTANTS = require('../CONSTANTS')
   // todoList Routes
-  app.route('/newGame')
-  .post(gameServer.newGame)
+  app.post("/newGame",gameServer.newGame)
 
   app.route("/getGameStatus/:id")
   .get(gameServer.getGamesStatus)
@@ -14,9 +13,6 @@ module.exports = function(app) {
 
   app.route('/getGameConfig/:id')
   .get(gameServer.getGameConfig)
-
-  app.route("/sayHello")
-    .post(gameServer.sayHello)
   
 
 };

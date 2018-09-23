@@ -4,11 +4,19 @@ import * as io from 'socket.io-client';
  
 @Injectable()
 export class MultiplayerService {
-  private url = 'http://localhost:5000';  
+  private url = 'http://localhost:3000';  
   private socket;
   
   sendMessage(message){
-    this.socket.emit('add-message', message);    
+    this.socket.emit('crearPartida');    
+  }
+
+  newConnection(uid){
+    this.socket.emit("new-connection", uid);
+  }
+
+  createMatch(config:any){
+    this.socket.emit("crear-partida",config)
   }
   
   getMessages() {

@@ -10,18 +10,11 @@ import { MatchmakingComponent } from './matchmaking/matchmaking.component';
 import { ProfileComponent } from './profile/profile.component';
 
 const APP_ROUTES: Routes = [
-<<<<<<< HEAD
-  { path: 'home', component: PlayViewComponent, canActivate:[authGuard] },
-  { path: 'board/:id', component: BoardComponent, canActivate:[authGuard]},
-  { path: 'matches', component: MatchmakingComponent, canActivate:[authGuard]},
-  { path: '**', pathMatch: 'full', redirectTo: 'login'},
-=======
   { path: 'home', component: PlayViewComponent },
   { path: 'board/:id', component: BoardComponent},
   { path: 'matches', component: MatchmakingComponent},
   { path: 'profile', component: ProfileComponent},
   { path: '**', pathMatch: 'full', redirectTo: 'login' },
->>>>>>> logica
   { path: 'login', component: LoginComponent},
   { path: 'register', component: RegisterComponent},
 ];

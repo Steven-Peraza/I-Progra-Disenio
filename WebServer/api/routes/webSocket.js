@@ -1,20 +1,11 @@
 'use strict';
-module.exports = function(){
-const express = require('express')
-const app = express()
-const bodyParser = require('body-parser')
-const http = require('http').Server(app);
+module.exports = function(http){
+//Dependencias
 const io = require('socket.io')(http);
-
-app.use(bodyParser.urlencoded({ extended: true }))
-
-app.get('/', (req, res) => {
-    // res.sendFile(__dirname + '/index.html')
-    res.send('Ejemplo de que se pueden hacer endpoints')
-    io.emit('message', {type: 'message',text: "jagger"},{for:'everyone'})
-})
-
-
+//Variables Globales 
+var Conexiones = {}
+var partidasPendientes = []
+var partidasEnCurso = []
 
 
 io.on('connection', (socket) => {
@@ -25,17 +16,20 @@ io.on('connection', (socket) => {
         console.log('user disconnected');
     });
 
-    socket.on('add-message', (message) => {
-        console.log(message)
-        io.emit('message', { type: 'new-message', text: message });
-    });
+    socket.on("crear-partida",(nuevaPartida)=>{
+        nuevaPartida.socketid = socket.id
+        console.log(nuevaPartida)
+        partidasPendientes.push(nuevaPartida)
+    })
+
+    socket.on("new-connection", (uid)=>{
+        console.log("idSocket: "+socket.id + " uid: "+uid)
+        Conexiones[uid]=socket.id
+        io.sockets.connected[socket.id].emit("message",{type:'new-message',text:"su uid es: "+uid});
+        console.log(Conexiones)
+    })
 
 });
 
-
-
-http.listen(5000, () => {
-    console.log('Server started on port 5000');
-});
 
 }

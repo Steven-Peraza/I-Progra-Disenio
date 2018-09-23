@@ -6,6 +6,7 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
 import { ProfilesServiceService } from '../services/profiles-service.service';
 import { Profile } from '../interface/profile.interface';
 import { map } from 'rxjs/operators';
+import { MultiplayerService } from '../services/web-socket.service';
 
 @Component({
   selector: 'app-board',
@@ -17,11 +18,27 @@ export class BoardComponent implements OnInit {
   public itemsCollection: AngularFirestoreCollection<Profile>;
   public itemsCollection2: AngularFirestoreCollection<Profile>;
 
-  constructor(private _dataService: BoardServiceService, private _route: ActivatedRoute,
+  constructor(private sck:MultiplayerService, private _dataService: BoardServiceService, private _route: ActivatedRoute,
     private _authService: ProfilesServiceService, private afs: AngularFirestore) {
    }
+   conexion = null;
+   mpId;
    ngOnInit(): void {
     this.id = this._route.snapshot.paramMap.get('id');
+    if(this.id == "mp"){
+      console.log("estas en una partida multijugador")
+      this.state = "MultijugadorEnEspera"
+      this.conexion = this.sck.matchCreated().subscribe((data:any)=>{
+        this.writeInfo(data.state)
+        this.config = data.config
+        this.mpId = data.id
+        console.log(this.mpId)
+        this.state = "EnProceso"
+        this.conexion = this.sck.getMoves()
+        .subscribe((data:GameStatus)=>this.writeInfo(data))
+      })
+    }
+    else{
     this._dataService.getConfig(this.id)
     .subscribe(
       (data) => {
@@ -29,9 +46,11 @@ export class BoardComponent implements OnInit {
       }
     );
     this.updateScreen();
+  }
+
    }
    currentStatus:GameStatus = { status: [],
-   //dimension: 4,
+   
    score: 200,
    stat: 1, 
    win: 0,
@@ -40,25 +59,31 @@ export class BoardComponent implements OnInit {
 
 id:string = "-1"
 
+state="EnProceso"
+
 config:any = {
-  "gameMode": "1",
-  "dificultad": 1,
-  "player1Sprite": "../../assets/img/mushroomsSprites/b.png",
-  "player2Sprite": "../../assets/img/mushroomsSprites/c.png",
-  "player1": "jafeth Vásquez",
-  "player1uid": "ABTtsOaH2Le5zsR6Ey5GkDezt8s1",
-  "player2uid": "AIPlayer",
-  "player2": "AI Player",
-  "size": "8",
-  "bgColor": "green"
+  gameMode: "1",
+  dificultad: 1,
+  player1Sprite: "../../assets/img/mushroomsSprites/b.png",
+  player2Sprite: "../../assets/img/mushroomsSprites/c.png",
+  player1: "jafeth Vásquez",
+  player1uid: "ABTtsOaH2Le5zsR6Ey5GkDezt8s1",
+  player2uid: "AIPlayer",
+  player2: "AI Player",
+  size: "8",
+  bgColor: "green",
 }
 
 
    markPosition(j, k) {
+     if(this.id == "mp"){
+      console.log("Fila " + j + " " + "Columna " + k);
+      this.sck.markPosition(j,k,this.mpId)
+     }else{
      console.log("Fila " + j + " " + "Columna " + k);
-     //this.currentStatus["status"][j][k] = "W";
     this._dataService.positionMarked(j, k, this.id)
     .subscribe((res: GameStatus) => this.writeInfo(res));
+     }
    }
 
    updateScreen() {

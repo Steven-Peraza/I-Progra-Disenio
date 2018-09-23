@@ -1,3 +1,5 @@
+{{this.config.state}}
+<div *ngIf="this.state == 'EnProceso'">
 <div class="table-light">
     <div class="row">
         <div class="col-sm-7">
@@ -37,4 +39,10 @@
             </div>
         </div>
     </div>
+</div>
+</div>
+
+<div class="text-center" *ngIf="this.state == 'MultijugadorEnEspera'">
+<img  src="../../assets/img/charging.gif"/>
+<h1>Esperando Oponente</h1>
 </div>

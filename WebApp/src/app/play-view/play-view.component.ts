@@ -62,10 +62,6 @@ connection;
 
   ngOnInit() {
     this.started = false;
-    this.connection = this.sck.getMessages()
-    .subscribe((message)=>{
-        console.log("hola")
-    })
   }
 
 
@@ -112,6 +108,7 @@ onChangeDif(dificultad) {
 startGame() {
   if(this.gameConfig.gameMode == 3){
   this.sck.createMatch(this.gameConfig);
+  this._router.navigate(["board","mp"]);
   }else{
   console.log(this.gameConfig);
   this._dataService.createNewGame({'config': this.gameConfig})

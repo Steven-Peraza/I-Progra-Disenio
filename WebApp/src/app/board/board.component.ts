@@ -16,9 +16,17 @@ export class BoardComponent implements OnInit {
 
   public itemsCollection: AngularFirestoreCollection<Profile>;
   public itemsCollection2: AngularFirestoreCollection<Profile>;
+  public uidSes: any = {};
 
   constructor(private _dataService: BoardServiceService, private _route: ActivatedRoute,
     private _authService: ProfilesServiceService, private afs: AngularFirestore) {
+      this._authService._firebaseAuth.authState.subscribe(user => {
+        console.log('US: ', user);
+        if (!user) {
+          return;
+        }
+        this.uidSes = user.uid;
+      });
    }
    ngOnInit(): void {
     this.id = this._route.snapshot.paramMap.get('id');
@@ -55,10 +63,26 @@ config:any = {
 
 
    markPosition(j, k) {
-     console.log("Fila " + j + " " + "Columna " + k);
-     //this.currentStatus["status"][j][k] = "W";
-    this._dataService.positionMarked(j, k, this.id)
+     console.log(this.currentStatus.uids[this.currentStatus.player - 1]);
+     if (this.currentStatus.uids[this.currentStatus.player - 1] == this.uidSes) {
+      this._dataService.positionMarked(j, k, this.id)
+      .subscribe((res: GameStatus) => this.writeInfo(res));
+      this.updateScreen();
+     }
+     else if (this.currentStatus.uids[this.currentStatus.player - 1] == 'AIPlayer') {
+        console.log('Turno AI, toque el boton!');
+     }
+     else{
+       console.log('Turno del otro player...');
+     }
+
+    // this.updateScreen();
+   }
+
+   turnoAI () {
+    this._dataService.positionMarked(0, 0, this.id)
     .subscribe((res: GameStatus) => this.writeInfo(res));
+    this.updateScreen();
    }
 
    updateScreen() {

@@ -66,7 +66,7 @@ export class LoginComponent implements OnInit {
       if (res.length > 0 ) {
       console.log('El perfil ya existe');
       } else {
-      this.itemsCollection.add({ empatados: 0, ganados: 0, perdidos: 0, nivel: 'Rook', uid: uid2 });
+      this.itemsCollection.doc(uid2).set({ empatados: 0, ganados: 0, perdidos: 0, nivel: 'Rook', uid: uid2 });
       }
   });
 

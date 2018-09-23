@@ -16,15 +16,15 @@ export class PlayViewComponent implements OnInit {
     ["Rojo", "../../assets/img/mushroomsSprites/a.png"],
     ["Verde", "../../assets/img/mushroomsSprites/b.png"],
     ["Azul", "../../assets/img/mushroomsSprites/c.png"],
-    ["d", "../../assets/img/mushroomsSprites/d.png"],
-    ["f", "../../assets/img/mushroomsSprites/f.png"],
-    ["g", "../../assets/img/mushroomsSprites/g.png"],
-    ["h", "../../assets/img/mushroomsSprites/h.png"],
-    ["i", "../../assets/img/mushroomsSprites/i.png"],
-    ["j", "../../assets/img/mushroomsSprites/j.png"],
-    ["k", "../../assets/img/mushroomsSprites/k.png"],
-    ["l", "../../assets/img/mushroomsSprites/l.png"],
-    ["m", "../../assets/img/mushroomsSprites/m.png"],
+    ["Rosa/Purpura", "../../assets/img/mushroomsSprites/d.png"],
+    ["Signo Pregunta", "../../assets/img/mushroomsSprites/f.png"],
+    ["Purpura", "../../assets/img/mushroomsSprites/g.png"],
+    ["Corazon", "../../assets/img/mushroomsSprites/h.png"],
+    ["Amarillo/Rojo", "../../assets/img/mushroomsSprites/i.png"],
+    ["Amarillo/Verde", "../../assets/img/mushroomsSprites/j.png"],
+    ["Estrellado", "../../assets/img/mushroomsSprites/k.png"],
+    ["Purpura/Fucsia", "../../assets/img/mushroomsSprites/l.png"],
+    ["Abejorro", "../../assets/img/mushroomsSprites/m.png"],
   ];
 
   player1M = "";
@@ -33,16 +33,16 @@ export class PlayViewComponent implements OnInit {
   started: boolean;
 
   public gameConfig = {
-  gameMode: 0,
+  gameMode: 1,
   dificultad: 1,
-  player1Sprite:'',
-  player2Sprite:'',
+  player1Sprite:'../../assets/img/mushroomsSprites/a.png',
+  player2Sprite:'../../assets/img/mushroomsSprites/a.png',
   player1:'player 1',
   player1uid:'hostia',
-  player2uid:'joder',
-  player2:'player 2',
-  size:'',
-  bgColor:''
+  player2uid:'En Espera',
+  player2:'Jugador en Espera',
+  size:'6',
+  bgColor:'green'
 };
 
   constructor(private _router: Router, private _dataService: BoardServiceService,
@@ -79,17 +79,18 @@ onChangeBg(backgroundColor) {
 }
 onChangeGM(gamemode) {
   this.gameConfig.gameMode = gamemode;
-  if (gamemode == 1) {
-    this.gameConfig.player2 = 'AI Player';
+  if (gamemode == 2) {
+    this.gameConfig.player2 = 'AI Dificultad EZ';
     this.gameConfig.player2uid = 'AIPlayer';
   } else{
     this.gameConfig.player2 = 'Jugador en Espera';
+    this.gameConfig.player2uid = 'En Espera';
   }
 
 }
 onChangeDif(dificultad) {
   this.gameConfig.dificultad = dificultad;
-  if (this.gameConfig.gameMode == 1) {
+  if (this.gameConfig.gameMode == 2) {
     if (this.gameConfig.dificultad == 1) {
         this.gameConfig.player2 = 'AI Dificultad EZ';
     } else if (this.gameConfig.dificultad == 2) {

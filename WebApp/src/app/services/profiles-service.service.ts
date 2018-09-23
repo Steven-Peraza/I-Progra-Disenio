@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
-import * as firebase from 'firebase/app'
+import * as firebase from 'firebase/app';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 })
 export class ProfilesServiceService {
 
-  private static user: firebase.auth.UserCredential
+  private static user: firebase.auth.UserCredential;
 
   constructor(
     public _firebaseAuth: AngularFireAuth
@@ -26,15 +26,15 @@ export class ProfilesServiceService {
   }
 
   getUser() {
-    return this._firebaseAuth.user
+    return this._firebaseAuth.user;
   }
 
   get currentUserObservable(): any {
-    return this._firebaseAuth.auth
+    return this._firebaseAuth.auth;
   }
 
-  getAuthState():boolean{
-    return this._firebaseAuth.authState !== null
+  getAuthState(): boolean {
+    return this._firebaseAuth.authState !== null;
   }
 
   doRegister(value) {
@@ -42,8 +42,12 @@ export class ProfilesServiceService {
       firebase.auth().createUserWithEmailAndPassword(value.email, value.password)
         .then(res => {
           resolve(res);
-        }, err => reject(err))
-    })
+        }, err => reject(err));
+    });
+  }
+
+  salir() {
+    return this._firebaseAuth.auth.signOut();
   }
 
 }

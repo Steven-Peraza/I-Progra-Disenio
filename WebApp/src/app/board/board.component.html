@@ -1,17 +1,24 @@
 <div class="table-light">
     <div class="row">
         <div class="col-sm-7">
-            <h4>Turno Actual: Jugador {{ currentStatus.player }}</h4>
+            <h4 *ngIf="currentStatus.player == 1">Turno Actual: {{ config['player1'] }}</h4>
+            <h4 *ngIf="currentStatus.player == 2">Turno Actual: {{ config['player2'] }}</h4>
+            <div *ngIf="currentStatus.stat == 2;">
+                <h4>Juego Terminado!</h4>
+                <h4 *ngIf="currentStatus.win == 1">Ganador: {{ config['player1'] }}</h4>
+                <h4 *ngIf="currentStatus.win == 2">Ganador: {{ config['player2'] }}</h4>
+                <h4 *ngIf="currentStatus.win == 3">Empate! Vaya...</h4>
+            </div>
         </div>
         <div class="col-sm-1">
             <h4>Puntaje:</h4>
         </div>
         <div class="col-sm-3">
             <div class="row">
-                <h4>Jugador 1 {{currentStatus.score[0]}}</h4>
+                <h4>{{ config['player1'] }}: {{currentStatus.score[0]}}</h4>
             </div>
             <div class="row">
-                <h4>Jugador 2 {{currentStatus.score[1]}}</h4>
+                <h4>{{ config['player2'] }}: {{currentStatus.score[1]}}</h4>
             </div>
         </div>
 
@@ -29,34 +36,5 @@
                 </div>
             </div>
         </div>
-
-        <div *ngIf="currentStatus.stat == 2;">
-            <h1>RIP Game!
-            </h1>
-            <h2>Ganador: {{ currentStatus.win }}</h2>
-        </div>
-
-
-        <!-->
-
-        <ng-template #content let-c="close" let-d="dismiss">
-            <div class="modal-header">
-                <h4 class="modal-title" id="modal-basic-title">Game Over!</h4>
-                <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-            <span aria-hidden="true">&times;</span>
-          </button>
-            </div>
-            <div class="modal-body">
-                <p>Ganador! {{ currentStatus.stat }} </p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline-dark" (click)="c('Save click')">Volver al menu</button>
-            </div>
-        </ng-template>
-
-
-        <div *ngIf="currentStatus.stat != 2">
-            <h1>RIP Game!
-            </h1>
-            <h2>Ganador: {{ currentStatus.win }}</h2>
-        </div> -->
+    </div>
+</div>

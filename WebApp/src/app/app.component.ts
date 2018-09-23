@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ChatService } from '../app/services/chat.service';
+import { ProfilesServiceService } from './services/profiles-service.service';
 
 @Component({
   selector: 'app-root',
@@ -9,4 +8,10 @@ import { ChatService } from '../app/services/chat.service';
 })
 export class AppComponent {
   title = 'app';
+  constructor( public _authService: ProfilesServiceService ) {
+
+  }
+  salir() {
+    this._authService.salir();
+  }
 }

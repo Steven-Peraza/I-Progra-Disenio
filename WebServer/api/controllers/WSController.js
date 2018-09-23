@@ -5,14 +5,11 @@ exports.getGamesStatus = (req, res)=>{
     console.log("hola?");
     var game2 = sesiones[parseInt(req.params.id)];
     res.json(game2.dataAct());
-    //console.log("player" + game2.dataAct().player);
-    console.log("Uids" + game2.dataAct().uids);
 };
 
 exports.getGameConfig = (req, res)=>{
     var game2 = sesiones[parseInt(req.params.id)];
     res.json(game2.config);
-    console.log("Config" + game2.config);
 }
 
 exports.newGame = (req, res)=>{
@@ -20,7 +17,6 @@ exports.newGame = (req, res)=>{
     var config = req.body['config'];
     console.log('New' + config['player1uid']);
     var newGameState = newGame["default"].nuevoJuego(parseInt(config['size']), parseInt(config['gameMode']), parseInt(config['dificultad']), config);
-    console.log('New#2 ' + newGameState);
     sesiones.push(newGameState);
     res.json({ "id": sesiones.length - 1 });
 

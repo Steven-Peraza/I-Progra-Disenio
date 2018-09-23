@@ -9,12 +9,12 @@
                             <div class="form-group col-md-4">
                                 <label for="inputState">Modo de Juego</label>
                                 <select (change)="onChangeGM($event.target.value)" id="GameModeInput" class="form-control">
-                        <option value="2">PVP</option>
-                        <option value="1">PVE</option>
-                        <option value="3">PVP online</option>
+                        <option value="1">PVP</option>
+                        <option value="2">PVE</option>
+                        <option value="3">PVP Online</option>
                       </select>
                             </div>
-                            <div class="form-group col-md-4" *ngIf="this.gameConfig.gameMode == 1">
+                            <div class="form-group col-md-4" *ngIf="this.gameConfig.gameMode == 2">
                                 <label for="inputState">Dificultad</label>
                                 <select (change)="onChangeDif($event.target.value)" id="DificultadInput" class="form-control">
                           <option value="1">Facil</option>
@@ -61,7 +61,6 @@
                             <div class="form-group col-md-4">
                                 <label for="inputState">Background Color</label>
                                 <select (change)="onChangeBg($event.target.value)" id="BackgroundColorInput" class="form-control">
-                          <option value="gray">gray</option>
                           <option value="green">green</option>
                           <option value="darkgreen">dark green</option>
                           <option value="darkcyan">dark cyan</option>
@@ -69,7 +68,7 @@
                         </select>
                             </div>
 
-                            <button (click)="startGame()" type="button" class="btn btn-primary">Iniciar Partida</button>
+                            <button (click)="startGame()" [disabled]="this.gameConfig.player1Sprite == this.gameConfig.player2Sprite" type="button" class="btn btn-primary">Iniciar Partida</button>
                         </form>
                     </div>
                 </div>

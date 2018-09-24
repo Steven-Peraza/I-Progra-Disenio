@@ -1,8 +1,8 @@
 'use strict';
 module.exports = function(app) {
     var gameServer = require('../controllers/WSController');
-    //var CONSTANTS = require('../CONSTANTS')
-    // todoList Routes
+
+    // Lista de rutas del servidor
     app.post("/newGame", gameServer.newGame)
 
     app.route("/getGameStatus/:id")

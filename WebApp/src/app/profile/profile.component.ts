@@ -1,3 +1,5 @@
+// Componente de Perfiles
+
 import { Component } from '@angular/core';
 import { ProfilesServiceService } from '../services/profiles-service.service';
 import { Profile } from '../interface/profile.interface';
@@ -16,7 +18,9 @@ export class ProfileComponent {
   public itemsCollection: AngularFirestoreCollection<Profile>;
   public acm1pt: Observable<Profile[]>;
 
+  // se requiere de la utilizacion de los servicios de autentificacion y de firebase
   constructor( private _authService: ProfilesServiceService, private afs: AngularFirestore ) {
+    // se hace un subscribe para obtener los datos del user y de la collecion de firebase del user actual
     this._authService._firebaseAuth.authState.subscribe(user => {
 
       if (!user) {

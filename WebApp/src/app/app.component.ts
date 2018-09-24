@@ -8,9 +8,11 @@ import { ProfilesServiceService } from './services/profiles-service.service';
 })
 export class AppComponent {
   title = 'app';
+  // utilizacion del servicio de autentificacion para el boton de deslogueo
   constructor( public _authService: ProfilesServiceService ) {
 
   }
+  // funcion que realiza el logout del user actual
   salir() {
     this._authService.salir();
   }

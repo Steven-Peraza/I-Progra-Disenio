@@ -1,3 +1,5 @@
+// Componetne de Sesiones de Juego
+
 import { Component} from '@angular/core';
 import { ChatService } from '../services/chat.service';
 import { Observable, Subject } from 'rxjs';
@@ -13,34 +15,36 @@ import { Router } from '@angular/router';
 })
 export class MatchmakingComponent {
 
-  constructor(public _cs: ChatService, private sck:MultiplayerService, 
-    private _profiles:ProfilesServiceService, private _router:Router) {
+  // se requiere de las funcionalidades de ciertos servicios como el de chat, multijugador y perfiles
+  constructor(public _cs: ChatService, private sck: MultiplayerService,
+    private _profiles: ProfilesServiceService, private _router: Router) {
   }
 
-  notifications: Subject<any>
+  notifications: Subject<any>;
   public connection;
-  public matches = []
+  public matches = [];
 
-  ngOnInit(){
-    this.connection = this.sck.getPendingMatches().subscribe((matches:any) =>{
-      console.log(matches)
-      this.matches = matches.matches
-    })
+
+  // se obtienen las sesiones a la espera de players mediante un subscribe
+  ngOnInit() {
+    this.connection = this.sck.getPendingMatches().subscribe((matches: any) => {
+      this.matches = matches.matches;
+    });
     this._profiles.getUser().subscribe(
-      (response)=>{
-        this.sck.newConnection(response.uid)
+      (response) => {
+        this.sck.newConnection(response.uid);
       }
-    )
+    );
   }
 
-  joinMatch(id){
+  // funcion para unirse a una partida a la espera de jugadores
+  joinMatch(id) {
     this._profiles.getUser()
-    .subscribe((user)=>{
-      this.sck.joinMatch({id:id,user:user})
-      this._router.navigate(["board","mp"])
-    })
+    .subscribe((user) => {
+      this.sck.joinMatch({id: id, user: user});
+      this._router.navigate(["board","mp"]);
+    });
   }
-    
 
 
 }

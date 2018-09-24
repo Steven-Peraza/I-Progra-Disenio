@@ -1,3 +1,6 @@
+
+// Componente de registro
+
 import { Component, OnInit } from '@angular/core';
 import { ProfilesServiceService } from '../services/profiles-service.service'
 
@@ -8,7 +11,8 @@ import { ProfilesServiceService } from '../services/profiles-service.service'
 })
 export class RegisterComponent implements OnInit {
 
-  constructor(private authService:ProfilesServiceService) { }
+  // se requiere del servicio de autentificacion
+  constructor(private authService: ProfilesServiceService) { }
 
   ngOnInit() {
   }
@@ -16,6 +20,7 @@ export class RegisterComponent implements OnInit {
   errorMessage="";
   successMessage="";
 
+  // funcion que realiza el registro de un nuevo user
   tryRegister(value){
     this.authService.doRegister(value)
     .then(res => {

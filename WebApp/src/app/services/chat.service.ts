@@ -1,3 +1,6 @@
+
+// Servicio de Chat
+
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { map } from 'rxjs/operators';
@@ -14,10 +17,10 @@ export class ChatService {
   public chats: Mensaje[] = [];
   public usuario: any = {};
 
-
+  // se utilizan los servicios de firebase y autentificacion
   constructor( private _authService: ProfilesServiceService,
   private afs: AngularFirestore ) {
-
+      // se obtienen los datos del user actual
       this._authService._firebaseAuth.authState.subscribe(user => {
         console.log('US: ', user);
         if (!user) {
@@ -29,7 +32,7 @@ export class ChatService {
       });
   }
 
-
+  // funcion que carga los mensajes de la collecion de firebase de chats
   cargarMensajes() {
 
     this.itemsCollection = this.afs.collection<Mensaje>('chats', ref => ref.orderBy('fecha', 'desc').limit(5));
@@ -46,6 +49,7 @@ export class ChatService {
         }));
   }
 
+  // funcion que suma un nuevo mensaje a la collecion de firebase
   newMessage( texto: string) {
     let message: Mensaje = {
       nombre: this.usuario.nombre,

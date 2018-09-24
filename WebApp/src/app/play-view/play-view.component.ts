@@ -1,9 +1,11 @@
+// Componente de Creacion de Partida
+
+
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BoardServiceService } from '../services/board-service.service';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { ProfilesServiceService } from '../services/profiles-service.service';
-import { Profile } from '../interface/profile.interface';
 import { MultiplayerService } from '../services/web-socket.service';
 
 @Component({
@@ -13,6 +15,7 @@ import { MultiplayerService } from '../services/web-socket.service';
 })
 export class PlayViewComponent implements OnInit {
 
+  // representacion de los distintos sprites de eleccion para el user
   letters = [
     ["Rojo", "../../assets/img/mushroomsSprites/a.png"],
     ["Verde", "../../assets/img/mushroomsSprites/b.png"],
@@ -33,6 +36,7 @@ export class PlayViewComponent implements OnInit {
 
   started: boolean;
 
+  // configuracion por defecto de partida
   public gameConfig = {
   gameMode: 1,
   dificultad: 1,
@@ -48,8 +52,10 @@ export class PlayViewComponent implements OnInit {
 
 connection;
 
-  constructor(private sck:MultiplayerService ,private _router: Router, private _dataService: BoardServiceService,
+// se requiere de la utilizacion de ciertos servicios como lo son el de multiplayer, router, autenficiacion, etc
+  constructor(private sck: MultiplayerService , private _router: Router, private _dataService: BoardServiceService,
     private _authService: ProfilesServiceService, private afs: AngularFirestore) {
+      // se obtienen los datos del user mediante un subscribe
       this._authService._firebaseAuth.authState.subscribe(user => {
 
         if (!user) {
@@ -64,7 +70,9 @@ connection;
     this.started = false;
   }
 
+// los onchange dependen de las opciones del user, uno por opcion de juego
 
+// cambio de sprites
 onChange(player, route) {
   if (player == 1) {
     this.gameConfig.player1Sprite = route;
@@ -74,12 +82,18 @@ onChange(player, route) {
     this.gameConfig.player2Sprite = route;
   }
 }
+
+// cambio de dimension de tablero
 onChangeBs(boardSize) {
   this.gameConfig.size = boardSize;
 }
+
+// cambio de color de tablero
 onChangeBg(backgroundColor) {
   this.gameConfig.bgColor = backgroundColor;
 }
+
+// cambio de modo de juego
 onChangeGM(gamemode) {
   this.gameConfig.gameMode = gamemode;
   if (gamemode == 2) {
@@ -91,6 +105,8 @@ onChangeGM(gamemode) {
   }
 
 }
+
+// cambio de dificultad, en caso de que sea modo de juego PVE
 onChangeDif(dificultad) {
   this.gameConfig.dificultad = dificultad;
   if (this.gameConfig.gameMode == 2) {
@@ -105,11 +121,12 @@ onChangeDif(dificultad) {
   }
 }
 
+// si todos los datos son correctos, se inicia un request para el inicio de juego
 startGame() {
-  if(this.gameConfig.gameMode == 3){
+  if (this.gameConfig.gameMode == 3) {
   this.sck.createMatch(this.gameConfig);
   this._router.navigate(["board","mp"]);
-  }else{
+  } else {
   console.log(this.gameConfig);
   this._dataService.createNewGame({'config': this.gameConfig})
   .subscribe((data) => { this._router.navigate(["board", data['id']]); });

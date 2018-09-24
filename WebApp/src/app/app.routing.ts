@@ -9,6 +9,15 @@ import { LoginComponent } from './login/login.component';
 import { MatchmakingComponent } from './matchmaking/matchmaking.component';
 import { ProfileComponent } from './profile/profile.component';
 
+
+// rutas de nuestra aplicacion
+  // home -> creacion de partida
+  // board -> partida de juego
+  // matches -> lobby y chat
+  // profile -> perfil de user
+  // login -> logueo de users
+  // register -> registro de nuevos users
+  
 const APP_ROUTES: Routes = [
   { path: 'home', component: PlayViewComponent, canActivate:[authGuard] },
   { path: 'board/:id', component: BoardComponent, canActivate:[authGuard]},

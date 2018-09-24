@@ -1,11 +1,11 @@
+// Componente de Tablero de Juego
+
 import { Component, OnInit, Input } from '@angular/core';
 import {BoardServiceService, GameStatus} from '../services/board-service.service';
-import { ActivatedRoute } from "@angular/router";
-import { Observable } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { ProfilesServiceService } from '../services/profiles-service.service';
 import { Profile } from '../interface/profile.interface';
-import { map } from 'rxjs/operators';
 import { MultiplayerService } from '../services/web-socket.service';
 
 @Component({
@@ -15,12 +15,16 @@ import { MultiplayerService } from '../services/web-socket.service';
 })
 export class BoardComponent implements OnInit {
 
+  // los itemcollections son referencias a los documentos de perfiles de ambos players
   public itemsCollection: AngularFirestoreCollection<Profile>;
   public itemsCollection2: AngularFirestoreCollection<Profile>;
   public uidSes: any = {};
+  public KO: boolean;
 
-  constructor(private sck:MultiplayerService, private _dataService: BoardServiceService, private _route: ActivatedRoute,
+  // se utilizan una serie de servicios para el correcto funcionamiento del componente
+  constructor(private sck: MultiplayerService, private _dataService: BoardServiceService, private _route: ActivatedRoute,
     private _authService: ProfilesServiceService, private afs: AngularFirestore) {
+      // subscribe para obtener los datos del usuario logueado actual
       this._authService._firebaseAuth.authState.subscribe(user => {
         console.log('US: ', user);
         if (!user) {
@@ -28,23 +32,25 @@ export class BoardComponent implements OnInit {
         }
         this.uidSes = user.uid;
       });
+      this.KO = false;
    }
    conexion = null;
    mpId;
+   // en el Oninit se encuentran los métodos necesarios para el funcionamiento del multijugador
    ngOnInit(): void {
     this.id = this._route.snapshot.paramMap.get('id');
-    if(this.id == "mp"){
-      console.log("estas en una partida multijugador")
-      this.state = "MultijugadorEnEspera"
+    if (this.id == "mp") {
+      console.log("estas en una partida multijugador");
+      this.state = "MultijugadorEnEspera";
       this.conexion = this.sck.matchCreated().subscribe((data:any)=>{
-        this.writeInfo(data.state)
-        this.config = data.config
-        this.mpId = data.id
-        console.log(this.mpId)
-        this.state = "EnProceso"
+        this.writeInfo(data.state);
+        this.config = data.config;
+        this.mpId = data.id;
+        console.log(this.mpId);
+        this.state = "EnProceso";
         this.conexion = this.sck.getMoves()
-        .subscribe((data:GameStatus)=>this.writeInfo(data))
-      })
+        .subscribe((data: GameStatus) => this.writeInfo(data));
+      });
     }
     else{
     this._dataService.getConfig(this.id)
@@ -57,48 +63,59 @@ export class BoardComponent implements OnInit {
   }
 
    }
+   // algunos datos por defecto
    currentStatus:GameStatus = { status: [],
-   
    score: 200,
    stat: 1, 
    win: 0,
    player: 2,
    uids:["Ernie","Bert"]};
 
-id:string = "-1"
+  id:string = "-1";
+  
+  state="EnProceso";
+  
+  config:any = {
+    gameMode: "1",
+    dificultad: 1,
+    player1Sprite: "../../assets/img/mushroomsSprites/b.png",
+    player2Sprite: "../../assets/img/mushroomsSprites/c.png",
+    player1: "jafeth Vásquez",
+    player1uid: "ABTtsOaH2Le5zsR6Ey5GkDezt8s1",
+    player2uid: "AIPlayer",
+    player2: "AI Player",
+    size: "8",
+    bgColor: "green",
+  };
 
-state="EnProceso"
-
-config:any = {
-  gameMode: "1",
-  dificultad: 1,
-  player1Sprite: "../../assets/img/mushroomsSprites/b.png",
-  player2Sprite: "../../assets/img/mushroomsSprites/c.png",
-  player1: "jafeth Vásquez",
-  player1uid: "ABTtsOaH2Le5zsR6Ey5GkDezt8s1",
-  player2uid: "AIPlayer",
-  player2: "AI Player",
-  size: "8",
-  bgColor: "green",
-}
-
-
+  // funcion que toma las coordenadas del click desde el componente html y realiza los requests segun la ocasion
    markPosition(j, k) {
+     this.updateScreen();
+     // en caso de un juego pvp en linea
      if(this.id == "mp"){
       console.log("Fila " + j + " " + "Columna " + k);
       this.sck.markPosition(j,k,this.mpId)
-     }else{
+     } // en casod de pve
+     else{
      console.log("Fila " + j + " " + "Columna " + k);
     this._dataService.positionMarked(j, k, this.id)
     .subscribe((res: GameStatus) => this.writeInfo(res));
      }
+     if (this.config['gameMode'] == 2) {
+      this._dataService.turnoAI(this.id)
+      .subscribe((res: GameStatus) => this.writeInfo(res));
+     }
+     this.updateScreen();
    }
 
+   // funcion que realiza el request para la obtencion del estado actual de juego y con eso los parametros para que
+   // el componente html se refresque
    updateScreen() {
     this._dataService.getStatus(this.id)
     .subscribe((data: GameStatus) => this.writeInfo(data));
    }
 
+   // funcion que toma los datos retornados por el request y los ubica en el estado de juego actual en el front
    writeInfo(data: GameStatus) {
     this.currentStatus = {
       status: data['board'],
@@ -108,18 +125,24 @@ config:any = {
       player: data['player'],
       uids: data['uids']
     };
-    if (this.currentStatus['stat'] == 2) {
+    // si el stat es 2, quiere decir que se ha acabado el juego, por lo tanto se actualizan los perfiles de los
+    // jugadores involucrados en la partida dentro de la base de datos
+    if (this.currentStatus['stat'] == 2 && !this.KO) {
       this.updateStats(this.currentStatus.uids[0].toString(), this.currentStatus.uids[1].toString(), this.currentStatus.win);
       this.updateNivel(this.currentStatus.uids[0].toString());
       this.updateNivel(this.currentStatus.uids[1].toString());
+      this.KO = true;
     }
    }
 
-
+  
+  // funcion que toma los uids de los players, mas el ganador y acutliza los datos en firebase
   updateStats(uidUp1: string, uidUp2: string, winner: number) {
+    // se toman los 2 documentos de la base de datos segun el player
     this.itemsCollection = this.afs.collection<Profile>('profiles', ref => ref.where('uid', '==', uidUp1));
     this.itemsCollection2 = this.afs.collection<Profile>('profiles', ref => ref.where('uid', '==', uidUp2));
 
+    // se actualizan los datos denpendiendo del ganador
     if ( winner == 1) {
       this.itemsCollection.doc(uidUp1).ref.get().then(function(doc) {
         if (doc.exists) {
@@ -194,13 +217,17 @@ config:any = {
     }
   }
 
+  // funcion que toma las partidas ganadas contra las perdidas de los players y actualiza su nivel de perfil
   updateNivel(uidUp: string) {
+    // se toma el documento del player
     this.itemsCollection = this.afs.collection<Profile>('profiles', ref => ref.where('uid', '==', uidUp));
     this.itemsCollection.doc(uidUp).ref.get().then(function(doc) {
       if (doc.exists) {
         let partidasTot: number = doc.data()['ganados'] + doc.data()['perdidos'] + doc.data()['empatados'];
         let rendimiento: number = doc.data()['ganados'] / doc.data()['perdidos'];
+        // si tiene mas de 10 partidas se actualiza por un perfil mas certero
         if (partidasTot > 9) {
+          // dependiendo del rendimiento del jugador se actualiza su perfil
           if (rendimiento >= 1 && rendimiento < 1.5) {
             doc.ref.update({
               nivel: "Buen Jugador",

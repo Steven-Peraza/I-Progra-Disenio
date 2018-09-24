@@ -28,7 +28,6 @@ import { PlayViewComponent } from './play-view/play-view.component';
 import { LoginComponent } from './login/login.component';
 import {environment} from '../environments/environment';
 import { RegisterComponent } from './register/register.component';
-import { PopComponent } from './pop/pop.component';
 import { ProfilesServiceService } from './services/profiles-service.service';
 import { AuthGuardService } from './services/auth-guard.service';
 import { ChatComponent } from './chat/chat.component';
@@ -42,7 +41,6 @@ import { ProfileComponent } from './profile/profile.component';
     PlayViewComponent,
     LoginComponent,
     RegisterComponent,
-    PopComponent,
     MatchmakingComponent,
     ChatComponent,
     ProfileComponent

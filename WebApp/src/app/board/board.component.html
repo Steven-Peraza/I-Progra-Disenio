@@ -3,8 +3,14 @@
     <div class="table-light">
         <div class="row">
             <div class="col-sm-7">
-                <h4 *ngIf="currentStatus.player == 1">Turno Actual: {{ config['player1'] }}</h4>
-                <h4 *ngIf="currentStatus.player == 2">Turno Actual: {{ config['player2'] }}</h4>
+                <div *ngIf="config['gameMode'] == 2">
+                    <h4> {{ config['player1'] }} vs {{ config['player2'] }} </h4>
+                </div>
+                <div *ngIf="config['gameMode'] != 2 ">
+                    <h4 *ngIf="currentStatus.player == 1">Turno Actual: {{ config['player1'] }}</h4>
+                    <h4 *ngIf="currentStatus.player == 2">Turno Actual: {{ config['player2'] }}</h4>
+                </div>
+
                 <div *ngIf="currentStatus.stat == 2;">
                     <h4>Juego Terminado!</h4>
                     <h4 *ngIf="currentStatus.win == 1">Ganador: {{ config['player1'] }}</h4>

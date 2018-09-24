@@ -18,6 +18,7 @@ export class BoardComponent implements OnInit {
   public itemsCollection: AngularFirestoreCollection<Profile>;
   public itemsCollection2: AngularFirestoreCollection<Profile>;
   public uidSes: any = {};
+  public KO: boolean;
 
   constructor(private sck:MultiplayerService, private _dataService: BoardServiceService, private _route: ActivatedRoute,
     private _authService: ProfilesServiceService, private afs: AngularFirestore) {
@@ -28,6 +29,7 @@ export class BoardComponent implements OnInit {
         }
         this.uidSes = user.uid;
       });
+      this.KO = false;
    }
    conexion = null;
    mpId;
@@ -84,6 +86,7 @@ config:any = {
 
 
    markPosition(j, k) {
+     this.updateScreen();
      if(this.id == "mp"){
       console.log("Fila " + j + " " + "Columna " + k);
       this.sck.markPosition(j,k,this.mpId)
@@ -92,6 +95,11 @@ config:any = {
     this._dataService.positionMarked(j, k, this.id)
     .subscribe((res: GameStatus) => this.writeInfo(res));
      }
+     if (this.config['gameMode'] == 2) {
+      this._dataService.turnoAI(this.id)
+      .subscribe((res: GameStatus) => this.writeInfo(res));
+     }
+     this.updateScreen();
    }
 
    updateScreen() {
@@ -108,10 +116,11 @@ config:any = {
       player: data['player'],
       uids: data['uids']
     };
-    if (this.currentStatus['stat'] == 2) {
+    if (this.currentStatus['stat'] == 2 && !this.KO) {
       this.updateStats(this.currentStatus.uids[0].toString(), this.currentStatus.uids[1].toString(), this.currentStatus.win);
       this.updateNivel(this.currentStatus.uids[0].toString());
       this.updateNivel(this.currentStatus.uids[1].toString());
+      this.KO = true;
     }
    }
 

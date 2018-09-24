@@ -29,6 +29,10 @@ createNewGame(gameConfig: any) {
 return this.http.post(CONSTANTS.SERVER_ROUTE()+"/newGame",gameConfig);
 }
 
+turnoAI(id) {
+  return this.http.post(CONSTANTS.SERVER_ROUTE()+"/moveAI",{"id":id});
+  }
+
 }
 export interface GameStatus {
     // dimension:number;

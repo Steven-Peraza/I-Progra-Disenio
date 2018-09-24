@@ -8,5 +8,5 @@ export const environment = {
     storageBucket: "stevensgamesdesign.appspot.com",
     messagingSenderId: "1070643824927"
   },
-  ws_url:"localhost"
+  ws_url:"https://othellogameserver.herokuapp.com/"
 };

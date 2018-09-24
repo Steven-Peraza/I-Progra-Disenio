@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import '../constants';
-import { CONSTANTS } from '../constants';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,20 +12,20 @@ export class BoardServiceService {
 
 getConfig(id: string): Observable<Object> {
 
-  return this.http.get(CONSTANTS.SERVER_ROUTE()+"/getGameConfig/"+id);
+  return this.http.get(environment.ws_url+"getGameConfig/"+id);
 
 }
 
 getStatus(id: string): Observable<Object> {
-  return this.http.get(CONSTANTS.SERVER_ROUTE()+"/getGameStatus/"+id);
+  return this.http.get(environment.ws_url+"getGameStatus/"+id);
 }
 
 positionMarked(j, k, id) {
-return this.http.post(CONSTANTS.SERVER_ROUTE()+"/positionMarked",{"row":j,"column":k,"id":id});
+return this.http.post(environment.ws_url+"positionMarked",{"row":j,"column":k,"id":id});
 }
 
 createNewGame(gameConfig: any) {
-return this.http.post(CONSTANTS.SERVER_ROUTE()+"/newGame",gameConfig);
+return this.http.post(environment.ws_url+"newGame",gameConfig);
 }
 
 }

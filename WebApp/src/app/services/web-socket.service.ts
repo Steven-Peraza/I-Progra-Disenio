@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs-compat';
 import * as io from 'socket.io-client';
+import { environment } from '../../environments/environment';
  
 @Injectable()
-export class MultiplayerService {
-  private url = 'http://localhost:3000';  
+export class MultiplayerService { 
   private socket;
   
   sendMessage(message){
@@ -16,17 +16,17 @@ export class MultiplayerService {
   }
 
   createMatch(config:any){
-    this.socket = io(this.url)
+    this.socket = io(environment.ws_url)
     this.socket.emit("create-match",config)
   }
 
   joinMatch(user){
-    this.socket = io(this.url)
+    this.socket = io(environment.ws_url)
     this.socket.emit("join-match",user)
   }
   
   getPendingMatches() {
-    this.socket = io(this.url);
+    this.socket = io(environment.ws_url);
     let observable = new Observable(observer => {
       this.socket.emit("get-matches");
       this.socket.on('pendingMatches', (data) => {

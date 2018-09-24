@@ -17,9 +17,17 @@ export class BoardComponent implements OnInit {
 
   public itemsCollection: AngularFirestoreCollection<Profile>;
   public itemsCollection2: AngularFirestoreCollection<Profile>;
+  public uidSes: any = {};
 
   constructor(private sck:MultiplayerService, private _dataService: BoardServiceService, private _route: ActivatedRoute,
     private _authService: ProfilesServiceService, private afs: AngularFirestore) {
+      this._authService._firebaseAuth.authState.subscribe(user => {
+        console.log('US: ', user);
+        if (!user) {
+          return;
+        }
+        this.uidSes = user.uid;
+      });
    }
    conexion = null;
    mpId;

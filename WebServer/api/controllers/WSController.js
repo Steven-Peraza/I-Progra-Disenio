@@ -26,7 +26,7 @@ exports.newGame = (req, res)=>{
 exports.positionMarked = (req, res)=>{
     //console.log("Antes" + sd.tableroGS.cambioTurno);
     var game = sesiones[req.body["id"]];
-    if (game.modoJuego == 1) {
+    /*if (game.modoJuego == 1) {
         sesiones[req.body["id"]] = game.jugadaRealizada([req.body["row"], req.body["column"]]);
         //console.log(sd.turnoJugador);
     } else if (game.modoJuego == 2) {
@@ -37,7 +37,9 @@ exports.positionMarked = (req, res)=>{
         }
     } else {
         console.log("ACM1PT");
-    }
+    }*/
+
+    sesiones[req.body["id"]] = game.jugadaRealizada([req.body["row"], req.body["column"]]);
     //console.log("Despues" + sd.tableroGS.cambioTurno);
     //console.log(sd.dataAct());
     res.json(game.dataAct());

@@ -11,20 +11,25 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
 export class LoginComponent implements OnInit {
 
   public itemsCollection: AngularFirestoreCollection<Profile>;
+  public user: any;
 
   constructor(private _authService: ProfilesServiceService, private afs: AngularFirestore) {
+    this.user = null;
   }
 
   ngOnInit() {
     this._authService.getUser()
     .subscribe(
       data => {
+        if (data == null) {
+          this.user = null;
+        }
         console.log(data);
       }
     );
   }
 
-  user:any = null;
+
 
   signInWithFacebook() {
     this.user = this._authService.signInWithFacebook()
@@ -45,7 +50,6 @@ export class LoginComponent implements OnInit {
         this.createNewProfile(data.user.uid);
       }
     );
-
   }
 
   createNewProfile(uid2: string) {

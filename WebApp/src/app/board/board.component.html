@@ -29,11 +29,6 @@
                     <h4>{{ config['player2'] }}: {{currentStatus.score[1]}}</h4>
                 </div>
             </div>
-
-            <!--<div class="col-sm-3">
-            <button (click)="turnoAI();">Siguiente Turno</button>
-        </div>-->
-
         </div>
     </div>
 
@@ -55,4 +50,16 @@
 <div class="text-center" *ngIf="this.state == 'MultijugadorEnEspera'">
     <img src="../../assets/img/charging.gif" />
     <h1>Esperando Oponente</h1>
+</div>
+
+<div *ngIf="this.state == 'OponenteEncontrado'">
+    <h1>Oponente encontrado</h1>
+    <ul *ngFor="let post of fuckMyLife | async">
+        <p style="color:white;font-size:20px">{{ post.nivel}}</p>
+        <p style="color:white;font-size:20px">{{ post.ganados}}</p>
+        <p style="color:white;font-size:20px">{{ post.perdidos}}</p>
+        <p style="color:white;font-size:20px">{{ post.empatados}}</p>
+    </ul>
+    <button class="btn btn-success" (click)="acceptPlayer()">Aceptar Jugador</button>
+    <button class="btn btn-danger" (click)="negatePlayer()">Rechazar Jugador</button>
 </div>

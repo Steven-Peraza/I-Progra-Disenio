@@ -5,11 +5,15 @@
         <tr>
             <th>ID Partida</th>
             <th>Jugador En Espera</th>
+            <th>Datos del Jugador (Nivel/G/P/E)</th>
             <th></th>
         </tr>
         <tr *ngFor="let match of this.matches">
             <td>{{match.id}}</td>
             <td>{{match.player1}}</td>
+            <td *ngFor="let post of fuckMyLife[match.id] | async">
+                {{ post.nivel}} / {{ post.ganados}} / {{ post.perdidos}} / {{ post.empatados}}
+            </td>
             <td><button (click)="joinMatch(match.id)" class="btn btn-primary">Unirse</button></td>
         </tr>
     </table>

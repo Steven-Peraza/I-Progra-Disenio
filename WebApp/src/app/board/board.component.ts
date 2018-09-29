@@ -7,6 +7,7 @@ import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/fire
 import { ProfilesServiceService } from '../services/profiles-service.service';
 import { Profile } from '../interface/profile.interface';
 import { MultiplayerService } from '../services/web-socket.service';
+import { Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-board',
@@ -18,6 +19,7 @@ export class BoardComponent implements OnInit {
   // los itemcollections son referencias a los documentos de perfiles de ambos players
   public itemsCollection: AngularFirestoreCollection<Profile>;
   public itemsCollection2: AngularFirestoreCollection<Profile>;
+  public fuckMyLife: Observable<Profile[]>;
   public uidSes: any = {};
   public KO: boolean;
 
@@ -36,21 +38,35 @@ export class BoardComponent implements OnInit {
    }
    conexion = null;
    mpId;
+   accepted = null;
    // en el Oninit se encuentran los métodos necesarios para el funcionamiento del multijugador
    ngOnInit(): void {
     this.id = this._route.snapshot.paramMap.get('id');
     if (this.id == "mp") {
       console.log("estas en una partida multijugador");
       this.state = "MultijugadorEnEspera";
-      this.conexion = this.sck.matchCreated().subscribe((data:any)=>{
-        this.writeInfo(data.state);
-        this.config = data.config;
-        this.mpId = data.id;
-        console.log(this.mpId);
-        this.state = "EnProceso";
-        this.conexion = this.sck.getMoves()
-        .subscribe((data: GameStatus) => this.writeInfo(data));
-      });
+      console.log("acc"+ this.accepted);
+      if (this.accepted == null) {
+        this.conexion = this.sck.playerFound().subscribe((data: any) => {
+          this.itemsCollection = this.afs.collection<Profile>('profiles', ref => ref.where('uid', '==', data.user.player2uid));
+          this.fuckMyLife = this.itemsCollection.valueChanges();
+          this.state = "OponenteEncontrado";
+          console.log("acc2"+ this.accepted);
+        });
+        console.log("acc3"+ this.accepted);
+      }
+      if (this.accepted) {
+        this.conexion = this.sck.matchCreated().subscribe((data: any) => {
+          this.writeInfo(data.state);
+          this.config = data.config;
+          this.mpId = data.id;
+          console.log(this.mpId);
+          this.state = "EnProceso";
+          this.conexion = this.sck.getMoves()
+          .subscribe((data: GameStatus) => this.writeInfo(data));
+        });
+      }
+
     }
     else{
     this._dataService.getConfig(this.id)
@@ -92,11 +108,11 @@ export class BoardComponent implements OnInit {
    markPosition(j, k) {
      this.updateScreen();
      // en caso de un juego pvp en linea
-     if(this.id == "mp"){
+     if (this.id == "mp") {
       console.log("Fila " + j + " " + "Columna " + k);
-      this.sck.markPosition(j,k,this.mpId)
+      this.sck.markPosition(j, k, this.mpId);
      } // en casod de pve
-     else{
+     else {
      console.log("Fila " + j + " " + "Columna " + k);
     this._dataService.positionMarked(j, k, this.id)
     .subscribe((res: GameStatus) => this.writeInfo(res));
@@ -135,7 +151,13 @@ export class BoardComponent implements OnInit {
     }
    }
 
-  
+  acceptPlayer() {
+    this.accepted = true;
+  }
+
+  negatePlayer() {
+    this.accepted = false;
+  }
   // funcion que toma los uids de los players, mas el ganador y acutliza los datos en firebase
   updateStats(uidUp1: string, uidUp2: string, winner: number) {
     // se toman los 2 documentos de la base de datos segun el player

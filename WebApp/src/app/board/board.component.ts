@@ -36,6 +36,18 @@ export class BoardComponent implements OnInit {
    }
    conexion = null;
    mpId;
+
+   ngOnDestroy(): void {
+     //Called once, before the instance is destroyed.
+     //Add 'implements OnDestroy' to the class.
+     this._authService.getUser()
+     .subscribe(
+       (user)=>{
+         this.sck.matchLeft(this.mpId,user)
+       }
+     )
+   }
+
    // en el Oninit se encuentran los métodos necesarios para el funcionamiento del multijugador
    ngOnInit(): void {
     this.id = this._route.snapshot.paramMap.get('id');
@@ -49,7 +61,14 @@ export class BoardComponent implements OnInit {
         console.log(this.mpId);
         this.state = "EnProceso";
         this.conexion = this.sck.getMoves()
-        .subscribe((data: GameStatus) => this.writeInfo(data));
+        .subscribe((data:any) => {
+          if(data.state == "move"){
+            this.writeInfo(data.move)
+          }
+          if(data.state == "abandon"){
+            this.state = "abandono"
+          }
+        });
       });
     }
     else{

@@ -39,10 +39,18 @@ export class MultiplayerService {
     return observable;
   }
 
+  matchLeft(id,user){
+    this.socket.emit("match-left",{id:id,user:user});
+  }
+
   getMoves() {
     let observable = new Observable(observer => {
+      this.socket.on('match-left',()=>{
+        console.log("tu compañero abandonó la partida")
+        observer.next({state:"abandon"})
+      })
       this.socket.on('moved', (data) => {
-        observer.next(data);    
+        observer.next({state:"move",move:data});    
       });
       return () => {
         this.socket.disconnect();

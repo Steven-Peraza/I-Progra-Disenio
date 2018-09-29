@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProfilesServiceService } from '../services/profiles-service.service';
 import { Profile } from '../interface/profile.interface';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,9 @@ export class LoginComponent implements OnInit {
   public user: any;
 
   // se requiere de los servicios de autentificacion y de firebase
-  constructor(private _authService: ProfilesServiceService, private afs: AngularFirestore) {
+  constructor(private _authService: ProfilesServiceService, 
+    private afs: AngularFirestore,
+    private _router:Router) {
     this.user = null;
   }
 
@@ -39,7 +42,9 @@ export class LoginComponent implements OnInit {
     .then(
       data => {
         this.user = data;
-        console.log(this.user);
+        if(data){
+          this._router.navigate(["matches"])
+        }
       }
     );
   }
@@ -51,6 +56,7 @@ export class LoginComponent implements OnInit {
         this.user = data.user.displayName;
         console.log(this._authService.getUser());
         this.createNewProfile(data.user.uid);
+        this._router.navigate(["matches"])
       }
     );
   }

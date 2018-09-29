@@ -34,7 +34,7 @@ return this.http.post(environment.ws_url+"newGame",gameConfig);
 }
 // request de turno automatico
 turnoAI(id) {
-  return this.http.post(CONSTANTS.SERVER_ROUTE()+"/moveAI",{"id":id});
+  return this.http.post(environment.ws_url+"moveAI",{"id":id});
   }
 
 }

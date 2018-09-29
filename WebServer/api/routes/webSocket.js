@@ -68,6 +68,18 @@ module.exports = function(http) {
             }
         })
 
+        socket.on("match-left", (data) => {
+            var current = partidasEnCurso[data.id]
+            console.log(current)
+            if (current.gameState.config.player1uid == data.user.uid) {
+                io.sockets.connected[Conexiones[current.gameState.config.player2uid]]
+                    .emit("match-left")
+            } else {
+                io.sockets.connected[Conexiones[current.gameState.config.player1uid]]
+                    .emit("match-left")
+            }
+        })
+
         socket.on("new-connection", (uid) => {
             console.log("idSocket: " + socket.id + " uid: " + uid)
             Conexiones[uid] = socket.id

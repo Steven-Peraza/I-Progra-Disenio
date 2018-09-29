@@ -63,3 +63,8 @@
     <button class="btn btn-success" (click)="acceptPlayer()">Aceptar Jugador</button>
     <button class="btn btn-danger" (click)="negatePlayer()">Rechazar Jugador</button>
 </div>
+
+<div class="text-center" *ngIf="this.state == 'abandono'">
+    <img class="img" src="../../assets/img/runner.png" />
+    <h1>Tu oponente ha abandonado la partida</h1>
+</div>

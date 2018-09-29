@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs-compat';
 import * as io from 'socket.io-client';
-
+import { environment } from '../../environments/environment';
+ 
 @Injectable()
-export class MultiplayerService {
-  private url = 'http://localhost:3000';
+export class MultiplayerService { 
   private socket;
 
   sendMessage(message) {
@@ -15,18 +15,22 @@ export class MultiplayerService {
     this.socket.emit("new-connection", uid);
   }
 
-  createMatch(config: any) {
-    this.socket = io(this.url);
-    this.socket.emit("create-match", config);
+  createMatch(config:any){
+    this.socket = io(environment.ws_url)
+    this.socket.emit("create-match",config)
   }
 
-  joinMatch(user) {
+  joinMatch(user){
+    this.socket = io(environment.ws_url)
+    this.socket.emit("join-match",user)
+  }
+
+  acceptPlayer(user) {
     this.socket = io(this.url);
     this.socket.emit("start-match", user);
-  }
 
   getPendingMatches() {
-    this.socket = io(this.url);
+    this.socket = io(environment.ws_url);
     let observable = new Observable(observer => {
       this.socket.emit("get-matches");
       this.socket.on('pendingMatches', (data) => {
@@ -39,10 +43,18 @@ export class MultiplayerService {
     return observable;
   }
 
+  matchLeft(id,user){
+    this.socket.emit("match-left",{id:id,user:user});
+  }
+
   getMoves() {
     let observable = new Observable(observer => {
+      this.socket.on('match-left',()=>{
+        console.log("tu compañero abandonó la partida")
+        observer.next({state:"abandon"})
+      })
       this.socket.on('moved', (data) => {
-        observer.next(data);
+        observer.next({state:"move",move:data});    
       });
       return () => {
         this.socket.disconnect();
@@ -62,17 +74,8 @@ export class MultiplayerService {
       this.socket.on('match-created', (data) => {
         observer.next(data);
       });
-      return () => {
-        this.socket.disconnect();
-      };
-    });
-    return observable;
-  }
-
-  playerFound() {
-    let observable = new Observable(observer => {
       this.socket.on('player-found', (data) => {
-        observer.next(data);
+        observer.next({data: data, evento:"accept-player"});
       });
       return () => {
         this.socket.disconnect();
@@ -81,3 +84,4 @@ export class MultiplayerService {
     return observable;
   }
 }
+

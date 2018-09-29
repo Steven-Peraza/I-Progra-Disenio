@@ -39,13 +39,25 @@ export class BoardComponent implements OnInit {
    conexion = null;
    mpId;
    accepted = null;
+
+   ngOnDestroy(): void {
+     //Called once, before the instance is destroyed.
+     //Add 'implements OnDestroy' to the class.
+     this._authService.getUser()
+     .subscribe(
+       (user)=>{
+         this.sck.matchLeft(this.mpId,user)
+       }
+     )
+   }
+
    // en el Oninit se encuentran los métodos necesarios para el funcionamiento del multijugador
    ngOnInit(): void {
     this.id = this._route.snapshot.paramMap.get('id');
     if (this.id == "mp") {
       console.log("estas en una partida multijugador");
       this.state = "MultijugadorEnEspera";
-      console.log("acc"+ this.accepted);
+      /*console.log("acc"+ this.accepted);
       if (this.accepted == null) {
         this.conexion = this.sck.playerFound().subscribe((data: any) => {
           this.itemsCollection = this.afs.collection<Profile>('profiles', ref => ref.where('uid', '==', data.user.player2uid));
@@ -66,7 +78,23 @@ export class BoardComponent implements OnInit {
           .subscribe((data: GameStatus) => this.writeInfo(data));
         });
       }
-
+*/
+      this.conexion = this.sck.matchCreated().subscribe((data:any)=>{
+        this.writeInfo(data.state);
+        this.config = data.config;
+        this.mpId = data.id;
+        console.log(this.mpId);
+        this.state = "EnProceso";
+        this.conexion = this.sck.getMoves()
+        .subscribe((data:any) => {
+          if(data.state == "move"){
+            this.writeInfo(data.move)
+          }
+          if(data.state == "abandon"){
+            this.state = "abandono"
+          }
+        });
+      });
     }
     else{
     this._dataService.getConfig(this.id)

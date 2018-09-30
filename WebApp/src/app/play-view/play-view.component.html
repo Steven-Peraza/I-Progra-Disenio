@@ -23,16 +23,6 @@
                         </select>
                             </div>
                             <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <label for="player1Input">Player 1</label>
-                                    <input [(ngModel)]="this.gameConfig.player1" name="first" type="text" class="form-control" id="player1Input" placeholder="username">
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="player2Input">Player 2</label>
-                                    <input [(ngModel)]="this.gameConfig.player2" name="first" type="text" class="form-control" id="player2Input" placeholder="username">
-                                </div>
-                            </div>
-                            <div class="form-row">
                                 <div class="form-group col-md-4">
                                     <label for="inputState">{{this.gameConfig.player1}} Mushroom</label>
                                     <select (change)="onChange(1,$event.target.value)" id="player1M" class="form-control">

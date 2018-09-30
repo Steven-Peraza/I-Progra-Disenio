@@ -7,10 +7,6 @@ import { environment } from '../../environments/environment';
 export class MultiplayerService { 
   private socket;
 
-  sendMessage(message) {
-    this.socket.emit('crearPartida');
-  }
-
   newConnection(uid) {
     this.socket.emit("new-connection", uid);
   }
@@ -21,13 +17,13 @@ export class MultiplayerService {
   }
 
   joinMatch(user){
-    this.socket = io(environment.ws_url)
     this.socket.emit("join-match",user)
   }
 
   acceptPlayer(user) {
-    this.socket = io(this.url);
+    this.socket = io(environment.ws_url);
     this.socket.emit("start-match", user);
+  }
 
   getPendingMatches() {
     this.socket = io(environment.ws_url);
@@ -63,6 +59,15 @@ export class MultiplayerService {
     return observable;
   }
 
+  tryJoin(data){
+    this.socket = io(environment.ws_url)
+    this.socket.emit("try-join",data)
+  }
+
+  RefuseOponent(oponent){
+    this.socket.emit("join-refused",oponent)
+  }
+
 
 
   markPosition(i, j, id) {
@@ -72,11 +77,14 @@ export class MultiplayerService {
   matchCreated() {
     let observable = new Observable(observer => {
       this.socket.on('match-created', (data) => {
-        observer.next(data);
+        observer.next({data:data, evento:"match-created"});
       });
-      this.socket.on('player-found', (data) => {
-        observer.next({data: data, evento:"accept-player"});
+      this.socket.on('oponent-found', (data) => {
+        observer.next({data: data, evento:"oponent-found"});
       });
+      this.socket.on("join-refused",()=>{
+        observer.next({evento:"join-refused"})
+      })
       return () => {
         this.socket.disconnect();
       };

@@ -35,11 +35,12 @@
 
     <div class="container">
         <div class="table-responsive">
-            <div *ngFor="let row of currentStatus.status; let j = index" class="col-md">
+            <div *ngFor="let row of currentStatus.status; let j = index" style="height: 10%;"class="col-md">
                 <div class="row">
-                    <div *ngFor="let col of row; let k = index" [ngStyle]="{'background':config.bgColor}" class="celda card" (click)="markPosition(j,k)">
-                        <img *ngIf="col.player=='1'" [src]="config.player1Sprite" width="100px" class="img-rounded">
-                        <img *ngIf="col.player=='2'" [src]="config.player2Sprite" width="100px" class="img-rounded">
+                    <div *ngFor="let col of row; let k = index" [ngStyle]="{'background':config.bgColor,'width':'10%'}" class=" celda card" (click)="markPosition(j,k)">
+                        <img *ngIf="col.player=='1'" [src]="config.player1Sprite" width="95%" class="img-rounded">
+                        <img *ngIf="col.player=='2'" [src]="config.player2Sprite" width="95%" class="img-rounded">
+                        <img *ngIf="col.player=='0'" src="../../assets/img/mushroomsSprites/void.png" width="95%" class="img-rounded">
                     </div>
                 </div>
             </div>
@@ -53,15 +54,19 @@
 </div>
 
 <div *ngIf="this.state == 'OponenteEncontrado'">
-    <h1>Oponente encontrado</h1>
-    <ul *ngFor="let post of fuckMyLife | async">
-        <p style="color:white;font-size:20px">{{ post.nivel}}</p>
-        <p style="color:white;font-size:20px">{{ post.ganados}}</p>
-        <p style="color:white;font-size:20px">{{ post.perdidos}}</p>
-        <p style="color:white;font-size:20px">{{ post.empatados}}</p>
-    </ul>
-    <button class="btn btn-success" (click)="acceptPlayer()">Aceptar Jugador</button>
-    <button class="btn btn-danger" (click)="negatePlayer()">Rechazar Jugador</button>
+        <div class="card" style="width: 18rem;">
+                <img class="card-img-top" [src]="temporalOponent.user.photoURL" alt="Card image cap">
+                <div class="card-body">
+                  <p class="card-text"><strong>{{temporalOponent.user.displayName}}</strong></p>
+                  <p class="card-text"><strong>Ganadas: </strong>{{temporalOponent.extraInfo.nivel}}</p>
+                  <p class="card-text"><strong>Perdidas: </strong>{{temporalOponent.extraInfo.ganados}}</p>
+                  <p class="card-text"><strong>Empatadas: </strong>{{temporalOponent.extraInfo.perdidos}}</p>
+                  <p class="card-text"><strong>Nivel: </strong>{{temporalOponent.extraInfo.empatados}}</p>
+                  <button class="btn btn-success" (click)="acceptPlayer()">Aceptar Jugador</button>
+                  <button class="btn btn-danger" (click)="negatePlayer()">Rechazar Jugador</button>
+                </div>
+              </div>
+    
 </div>
 
 <div class="text-center" *ngIf="this.state == 'abandono'">

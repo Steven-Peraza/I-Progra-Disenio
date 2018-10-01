@@ -5,8 +5,11 @@
         <a class="navbar-brand" href="#">
             <img src="../assets/img/mushroomsSprites/a.png" width="50" height="50" alt=""> Steven's Games
         </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="#/home">Crear Partida <span class="sr-only">(current)</span></a>
                 </li>
@@ -17,10 +20,12 @@
                     <a class="nav-link" href="#/profile">Perfil</a>
                 </li>
             </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <a routerLink="login"><button class="btn btn-danger" (click)="salir();"> Logout</button></a>
+            </form>
         </div>
-        <form class="form-inline">
-            <a routerLink="login"><button class="btn btn-danger" (click)="salir();"> Logout</button></a>
-        </form>
+
+
     </nav>
     <!-- Collapsible content -->
     <div class="app-container">

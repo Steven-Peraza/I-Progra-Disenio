@@ -51,7 +51,7 @@ export class MatchmakingComponent {
   joinMatch(id) {
     this._profiles.getUser()
     .subscribe((user) => {
-      this.sck.joinMatch({id: id, user: user});
+      this.sck.tryJoin({id: id, user: user});
       this._router.navigate(["board","mp"]);
     });
   }

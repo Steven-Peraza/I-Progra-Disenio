@@ -1,8 +1,8 @@
 // Componente de Tablero de Juego
 
 import { Component, OnInit, Input } from '@angular/core';
-import {BoardServiceService, GameStatus} from '../services/board-service.service';
-import { ActivatedRoute } from '@angular/router';
+import { BoardServiceService, GameStatus } from '../services/board-service.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { ProfilesServiceService } from '../services/profiles-service.service';
 import { Profile } from '../interface/profile.interface';
@@ -24,102 +24,110 @@ export class BoardComponent implements OnInit {
   public KO: boolean;
 
   // se utilizan una serie de servicios para el correcto funcionamiento del componente
-  constructor(private sck: MultiplayerService, private _dataService: BoardServiceService, private _route: ActivatedRoute,
-    private _authService: ProfilesServiceService, private afs: AngularFirestore) {
-      // subscribe para obtener los datos del usuario logueado actual
-      this._authService._firebaseAuth.authState.subscribe(user => {
-        console.log('US: ', user);
-        if (!user) {
-          return;
-        }
-        this.uidSes = user.uid;
-      });
-      this.KO = false;
-   }
-   conexion = null;
-   mpId;
-   accepted = null;
+  constructor(private sck: MultiplayerService,
+    private _dataService: BoardServiceService,
+    private _route: ActivatedRoute,
+    private _router: Router,
+    private _authService: ProfilesServiceService,
+    private afs: AngularFirestore) {
+    // subscribe para obtener los datos del usuario logueado actual
+    this._authService._firebaseAuth.authState.subscribe(user => {
+      console.log('US: ', user);
+      if (!user) {
+        return;
+      }
+      this.uidSes = user.uid;
+    });
+    this.KO = false;
+  }
+  conexion = null;
+  mpId;
+  accepted = null;
+  temporalOponent;
 
-   ngOnDestroy(): void {
-     //Called once, before the instance is destroyed.
-     //Add 'implements OnDestroy' to the class.
-     this._authService.getUser()
-     .subscribe(
-       (user)=>{
-         this.sck.matchLeft(this.mpId,user)
-       }
-     )
-   }
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    if (this.state == "EnProceso") {
+      this._authService.getUser()
+        .subscribe(
+          (user) => {
+            this.sck.matchLeft(this.mpId, user)
+          }
+        )
+    }
+  }
 
-   // en el Oninit se encuentran los métodos necesarios para el funcionamiento del multijugador
-   ngOnInit(): void {
+  // en el Oninit se encuentran los métodos necesarios para el funcionamiento del multijugador
+  ngOnInit(): void {
     this.id = this._route.snapshot.paramMap.get('id');
     if (this.id == "mp") {
       console.log("estas en una partida multijugador");
       this.state = "MultijugadorEnEspera";
-      /*console.log("acc"+ this.accepted);
-      if (this.accepted == null) {
-        this.conexion = this.sck.playerFound().subscribe((data: any) => {
-          this.itemsCollection = this.afs.collection<Profile>('profiles', ref => ref.where('uid', '==', data.user.player2uid));
-          this.fuckMyLife = this.itemsCollection.valueChanges();
-          this.state = "OponenteEncontrado";
-          console.log("acc2"+ this.accepted);
-        });
-        console.log("acc3"+ this.accepted);
-      }
-      if (this.accepted) {
-        this.conexion = this.sck.matchCreated().subscribe((data: any) => {
+
+      this.conexion = this.sck.matchCreated().subscribe((data: any) => {
+        if (data.evento == "join-refused") {
+          this._router.navigate(["matches"])
+        }
+        if (data.evento == "match-created") {
+          data = data.data
           this.writeInfo(data.state);
           this.config = data.config;
           this.mpId = data.id;
           console.log(this.mpId);
           this.state = "EnProceso";
           this.conexion = this.sck.getMoves()
-          .subscribe((data: GameStatus) => this.writeInfo(data));
-        });
-      }
-*/
-      this.conexion = this.sck.matchCreated().subscribe((data:any)=>{
-        this.writeInfo(data.state);
-        this.config = data.config;
-        this.mpId = data.id;
-        console.log(this.mpId);
-        this.state = "EnProceso";
-        this.conexion = this.sck.getMoves()
-        .subscribe((data:any) => {
-          if(data.state == "move"){
-            this.writeInfo(data.move)
-          }
-          if(data.state == "abandon"){
-            this.state = "abandono";
-          }
-        });
+            .subscribe((data: any) => {
+              if (data.state == "move") {
+                this.writeInfo(data.move)
+              }
+              if (data.state == "abandon") {
+                this.state = "abandono"
+              }
+            });
+        }
+        if (data.evento == "oponent-found") {
+          this.state = "OponenteEncontrado"
+          this.temporalOponent = data.data
+          this.afs.collection("profiles").doc(this.temporalOponent.user.uid).ref.get()
+          .then((data)=>{
+            this.temporalOponent.extraInfo = {
+              nivel:data.get("nivel"),
+              ganados:data.get("ganados"),
+              perdidos:data.get("perdidos"),
+              empatados:data.get("empatados")
+            }
+            console.log(this.temporalOponent.extraInfo)
+          })
+        }
       });
     }
-    else{
-    this._dataService.getConfig(this.id)
-    .subscribe(
-      (data) => {
-        this.config = data;
-      }
-    );
-    this.updateScreen();
+    else {
+      this._dataService.getConfig(this.id)
+        .subscribe(
+          (data) => {
+            this.config = data;
+          }
+        );
+      this.updateScreen();
+    }
+
   }
+  // algunos datos por defecto
+  currentStatus: GameStatus = {
+    status: [],
+    score: 200,
+    stat: 1,
+    win: 0,
+    player: 2,
+    uids: ["Ernie", "Bert"]
+  };
 
-   }
-   // algunos datos por defecto
-   currentStatus:GameStatus = { status: [],
-   score: 200,
-   stat: 1, 
-   win: 0,
-   player: 2,
-   uids:["Ernie","Bert"]};
+  id: string = "-1";
 
-  id:string = "-1";
-  
-  state="EnProceso";
-  
-  config:any = {
+  state = "EnProceso";
+
+  config: any = {
     gameMode: "1",
     dificultad: 1,
     player1Sprite: "../../assets/img/mushroomsSprites/b.png",
@@ -133,34 +141,34 @@ export class BoardComponent implements OnInit {
   };
 
   // funcion que toma las coordenadas del click desde el componente html y realiza los requests segun la ocasion
-   markPosition(j, k) {
-     this.updateScreen();
-     // en caso de un juego pvp en linea
-     if (this.id == "mp") {
+  markPosition(j, k) {
+    this.updateScreen();
+    // en caso de un juego pvp en linea
+    if (this.id == "mp") {
       console.log("Fila " + j + " " + "Columna " + k);
       this.sck.markPosition(j, k, this.mpId);
-     } // en casod de pve
-     else {
-     console.log("Fila " + j + " " + "Columna " + k);
-    this._dataService.positionMarked(j, k, this.id)
-    .subscribe((res: GameStatus) => this.writeInfo(res));
-     }
-     if (this.config['gameMode'] == 2) {
+    } // en casod de pve
+    else {
+      console.log("Fila " + j + " " + "Columna " + k);
+      this._dataService.positionMarked(j, k, this.id)
+        .subscribe((res: GameStatus) => this.writeInfo(res));
+    }
+    if (this.config['gameMode'] == 2) {
       this._dataService.turnoAI(this.id)
-      .subscribe((res: GameStatus) => this.writeInfo(res));
-     }
-     this.updateScreen();
-   }
+        .subscribe((res: GameStatus) => this.writeInfo(res));
+    }
+    this.updateScreen();
+  }
 
-   // funcion que realiza el request para la obtencion del estado actual de juego y con eso los parametros para que
-   // el componente html se refresque
-   updateScreen() {
+  // funcion que realiza el request para la obtencion del estado actual de juego y con eso los parametros para que
+  // el componente html se refresque
+  updateScreen() {
     this._dataService.getStatus(this.id)
-    .subscribe((data: GameStatus) => this.writeInfo(data));
-   }
+      .subscribe((data: GameStatus) => this.writeInfo(data));
+  }
 
-   // funcion que toma los datos retornados por el request y los ubica en el estado de juego actual en el front
-   writeInfo(data: GameStatus) {
+  // funcion que toma los datos retornados por el request y los ubica en el estado de juego actual en el front
+  writeInfo(data: GameStatus) {
     this.currentStatus = {
       status: data['board'],
       score: data['score'],
@@ -177,92 +185,90 @@ export class BoardComponent implements OnInit {
       this.updateNivel(this.currentStatus.uids[1].toString());
       this.KO = true;
     }
-   }
+  }
 
   acceptPlayer() {
-    this.accepted = true;
+    this.sck.joinMatch(this.temporalOponent);
   }
 
   negatePlayer() {
-    this.accepted = false;
+    this.sck.RefuseOponent(this.temporalOponent.user.uid)
+    this.state = "MultijugadorEnEspera"
   }
+
   // funcion que toma los uids de los players, mas el ganador y acutliza los datos en firebase
   updateStats(uidUp1: string, uidUp2: string, winner: number) {
-    // se toman los 2 documentos de la base de datos segun el player
-    this.itemsCollection = this.afs.collection<Profile>('profiles', ref => ref.where('uid', '==', uidUp1));
-    this.itemsCollection2 = this.afs.collection<Profile>('profiles', ref => ref.where('uid', '==', uidUp2));
-
     // se actualizan los datos denpendiendo del ganador
-    if ( winner == 1) {
-      this.itemsCollection.doc(uidUp1).ref.get().then(function(doc) {
+    if (winner == 1) {
+      this.itemsCollection.doc(uidUp1).ref.get().then(function (doc) {
         if (doc.exists) {
           doc.ref.update({
             ganados: doc.data()['ganados'] + 1
-            });
-      } else {
+          });
+        } else {
           console.log("No such document!");
-      }
-      }).catch(function(error) {
-          console.log("Error getting document:", error);
+        }
+      }).catch(function (error) {
+        console.log("Error getting document:", error);
       });
-      this.itemsCollection2.doc(uidUp2).ref.get().then(function(doc) {
+      this.itemsCollection2.doc(uidUp2).ref.get().then(function (doc) {
         if (doc.exists) {
           doc.ref.update({
             perdidos: doc.data()['perdidos'] + 1
-            });
-      } else {
+          });
+        } else {
           console.log("No such document!");
-      }
-      }).catch(function(error) {
-          console.log("Error getting document:", error);
+        }
+      }).catch(function (error) {
+        console.log("Error getting document:", error);
       });
     }
-    else if ( winner == 2) {
-      this.itemsCollection.doc(uidUp1).ref.get().then(function(doc) {
+    else if (winner == 2) {
+      this.itemsCollection.doc(uidUp1).ref.get().then(function (doc) {
         if (doc.exists) {
           doc.ref.update({
             perdidos: doc.data()['perdidos'] + 1
-            });
-      } else {
+          });
+        } else {
           console.log("No such document!");
-      }
-      }).catch(function(error) {
-          console.log("Error getting document:", error);
+        }
+      }).catch(function (error) {
+        console.log("Error getting document:", error);
       });
-      this.itemsCollection2.doc(uidUp2).ref.get().then(function(doc) {
+      this.itemsCollection2.doc(uidUp2).ref.get().then(function (doc) {
         if (doc.exists) {
           doc.ref.update({
             ganados: doc.data()['ganados'] + 1
-            });
-      } else {
+          });
+        } else {
           console.log("No such document!");
-      }
-      }).catch(function(error) {
-          console.log("Error getting document:", error);
+        }
+      }).catch(function (error) {
+        console.log("Error getting document:", error);
       });
     }
     else {
-      this.itemsCollection.doc(uidUp1).ref.get().then(function(doc) {
+      this.itemsCollection.doc(uidUp1).ref.get().then(function (doc) {
         if (doc.exists) {
           doc.ref.update({
             empatados: doc.data()['empatados'] + 1
-            });
-      } else {
+          });
+        } else {
           console.log("No such document!");
-      }
-      }).catch(function(error) {
-          console.log("Error getting document:", error);
+        }
+      }).catch(function (error) {
+        console.log("Error getting document:", error);
       });
-      this.itemsCollection2.doc(uidUp2).ref.get().then(function(doc) {
+      this.itemsCollection2.doc(uidUp2).ref.get().then(function (doc) {
         if (doc.exists) {
           doc.ref.update({
             empatados: doc.data()['empatados'] + 1
-            });
-      } else {
+          });
+        } else {
           console.log("No such document!");
-      }
-      }).catch(function(error) {
-          console.log("Error getting document:", error);
+        }
+      }).catch(function (error) {
+        console.log("Error getting document:", error);
       });
     }
   }
@@ -271,7 +277,7 @@ export class BoardComponent implements OnInit {
   updateNivel(uidUp: string) {
     // se toma el documento del player
     this.itemsCollection = this.afs.collection<Profile>('profiles', ref => ref.where('uid', '==', uidUp));
-    this.itemsCollection.doc(uidUp).ref.get().then(function(doc) {
+    this.itemsCollection.doc(uidUp).ref.get().then(function (doc) {
       if (doc.exists) {
         let partidasTot: number = doc.data()['ganados'] + doc.data()['perdidos'] + doc.data()['empatados'];
         let rendimiento: number = doc.data()['ganados'] / doc.data()['perdidos'];
@@ -281,27 +287,27 @@ export class BoardComponent implements OnInit {
           if (rendimiento >= 1 && rendimiento < 1.5) {
             doc.ref.update({
               nivel: "Buen Jugador",
-              });
+            });
           } else if (rendimiento >= 1.5) {
             doc.ref.update({
               nivel: "Crack",
-              });
+            });
           } else if (rendimiento < 1 && rendimiento >= 0.5) {
             doc.ref.update({
               nivel: "Malito pero no tanto",
-              });
+            });
           } else if (rendimiento < 0.5) {
             doc.ref.update({
               nivel: "Salgase solo",
-              });
+            });
           }
         }
 
-    } else {
+      } else {
         console.log("No such document!");
-    }
-    }).catch(function(error) {
-        console.log("Error getting document:", error);
+      }
+    }).catch(function (error) {
+      console.log("Error getting document:", error);
     });
 
 

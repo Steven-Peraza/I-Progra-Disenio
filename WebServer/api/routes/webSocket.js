@@ -6,7 +6,16 @@ module.exports = function(http) {
     var Conexiones = {}
     var partidasPendientes = []
     var partidasEnCurso = []
+        // Import Admin SDK
+    var admin = require("firebase-admin");
 
+    var serviceAccount = require("../../api/stevensgamesdesign-firebase-adminsdk-r4fzg-d65f88f83d.json");
+
+    admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount),
+        databaseURL: "https://stevensgamesdesign.firebaseio.com"
+    });
+    var db = admin.database();
 
     io.on('connection', (socket) => {
 
@@ -35,11 +44,11 @@ module.exports = function(http) {
             io.sockets.connected[Conexiones[joined.player2uid]].emit("match-created", { id: partidasEnCurso.length - 1, state: newGameState.dataAct(), config: newGameState.config })
         })
 
-        socket.on("start-match", (data) => {
+        /*socket.on("start-match", (data) => {
             console.log("StartServer");
             var joined = partidasPendientes[data.id];
             io.sockets.connected[Conexiones[joined.player1uid]].emit("player-found", { player2: data.user.displayName, player2uid: data.user.player2uid })
-        })
+        })*/
 
         socket.on("create-match", (nuevaPartida) => {
             Conexiones[nuevaPartida.player1uid] = socket.id
@@ -69,8 +78,10 @@ module.exports = function(http) {
         })
 
         socket.on("match-left", (data) => {
-            var current = partidasEnCurso[data.id]
+            var current = partidasEnCurso.pop(data.id);
             console.log(current)
+            var ref = db.ref("partidasPausadas");
+            ref.push({ partida: current });
             if (current.gameState.config.player1uid == data.user.uid) {
                 io.sockets.connected[Conexiones[current.gameState.config.player2uid]]
                     .emit("match-left")

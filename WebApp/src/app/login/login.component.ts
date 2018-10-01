@@ -42,9 +42,9 @@ export class LoginComponent implements OnInit {
     .then(
       data => {
         this.user = data;
-        if(data){
+        /*if(data){
           this._router.navigate(["matches"])
-        }
+        }*/
       }
     );
   }
@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit {
         this.user = data.user.displayName;
         console.log(this._authService.getUser());
         this.createNewProfile(data.user.uid);
-        this._router.navigate(["matches"])
+        // this._router.navigate(["matches"])
       }
     );
   }

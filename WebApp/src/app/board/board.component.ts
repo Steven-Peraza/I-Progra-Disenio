@@ -91,7 +91,7 @@ export class BoardComponent implements OnInit {
             this.writeInfo(data.move)
           }
           if(data.state == "abandon"){
-            this.state = "abandono"
+            this.state = "abandono";
           }
         });
       });

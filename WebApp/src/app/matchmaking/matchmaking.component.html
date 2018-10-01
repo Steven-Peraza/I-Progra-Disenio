@@ -3,7 +3,13 @@
 
     <h2>Partidas en Linea</h2>
     <div class="row">
-        <div class="col-8 lobby bg-info">
+        <div class="col-1"></div>
+        <div class="col-3">
+            <div class="chat-window bg-info">
+                <app-chat></app-chat>
+            </div>
+        </div>
+        <div class="col-8 lobby bg-info" style="width: 50%;">
             <div>
                 <table style="width: 100%">
                     <tr>
@@ -21,12 +27,6 @@
                         <td><button (click)="joinMatch(match.id)" class="btn btn-primary">Unirse</button></td>
                     </tr>
                 </table>
-            </div>
-        </div>
-        <div class="col-1"></div>
-        <div class="col-3">
-            <div class="chat-window bg-info">
-                <app-chat></app-chat>
             </div>
         </div>
     </div>

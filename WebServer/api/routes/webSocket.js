@@ -6,7 +6,16 @@ module.exports = function(http) {
     var Conexiones = {}
     var partidasPendientes = []
     var partidasEnCurso = []
+        // Import Admin SDK
+    var admin = require("firebase-admin");
 
+    var serviceAccount = require("../../api/stevensgamesdesign-firebase-adminsdk-r4fzg-d65f88f83d.json");
+
+    admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount),
+        databaseURL: "https://stevensgamesdesign.firebaseio.com"
+    });
+    var db = admin.database();
 
     io.on('connection', (socket) => {
 
@@ -37,10 +46,10 @@ module.exports = function(http) {
         socket.on("try-join", (data) => {
             Conexiones[data.user.uid] = socket.id
             var joined = partidasPendientes[data.id]
-            io.sockets.connected[Conexiones[joined.player1uid]].emit("oponent-found",data)
+            io.sockets.connected[Conexiones[joined.player1uid]].emit("oponent-found", data)
         })
 
-        socket.on("join-refused", (oponent)=>{
+        socket.on("join-refused", (oponent) => {
             io.sockets.connected[Conexiones[oponent]].emit("join-refused")
         })
 
@@ -72,8 +81,10 @@ module.exports = function(http) {
         })
 
         socket.on("match-left", (data) => {
-            var current = partidasEnCurso[data.id]
+            var current = partidasEnCurso.pop(data.id);
             console.log(current)
+            var ref = db.ref("partidasPausadas");
+            ref.push({ partida: current });
             if (current.gameState.config.player1uid == data.user.uid) {
                 io.sockets.connected[Conexiones[current.gameState.config.player2uid]]
                     .emit("match-left")

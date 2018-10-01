@@ -35,7 +35,7 @@ export class ChatService {
   // funcion que carga los mensajes de la collecion de firebase de chats
   cargarMensajes() {
 
-    this.itemsCollection = this.afs.collection<Mensaje>('chats', ref => ref.orderBy('fecha', 'desc').limit(5));
+    this.itemsCollection = this.afs.collection<Mensaje>('chats', ref => ref.orderBy('fecha', 'desc').limit(20));
 
     return this.itemsCollection.valueChanges()
         .pipe(map((mensajes: Mensaje[]) => {

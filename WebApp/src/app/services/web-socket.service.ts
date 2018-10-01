@@ -12,8 +12,8 @@ export class MultiplayerService {
   }
 
   createMatch(config:any){
-    this.socket = io(environment.ws_url);
-    this.socket.emit("create-match",config);
+    this.socket = io(environment.ws_url)
+    this.socket.emit("create-match",config)
   }
 
   joinMatch(user){
@@ -39,18 +39,18 @@ export class MultiplayerService {
     return observable;
   }
 
-  matchLeft(id, user) {
-    this.socket.emit("match-left", { id: id, user: user});
+  matchLeft(id,user){
+    this.socket.emit("match-left",{id:id,user:user});
   }
 
   getMoves() {
     let observable = new Observable(observer => {
-      this.socket.on('match-left', () => {
+      this.socket.on('match-left',()=>{
         console.log("tu compañero abandonó la partida")
-        observer.next({state:"abandon"});
+        observer.next({state:"abandon"})
       })
       this.socket.on('moved', (data) => {
-        observer.next({state:"move", move: data});
+        observer.next({state:"move",move:data});    
       });
       return () => {
         this.socket.disconnect();
@@ -80,7 +80,7 @@ export class MultiplayerService {
         observer.next({data:data, evento:"match-created"});
       });
       this.socket.on('oponent-found', (data) => {
-        observer.next({data: data, evento:"oponent-found"});
+        observer.next({data:data, evento:"oponent-found"});
       });
       this.socket.on("join-refused",()=>{
         observer.next({evento:"join-refused"})

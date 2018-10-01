@@ -81,10 +81,10 @@ module.exports = function(http) {
         })
 
         socket.on("match-left", (data) => {
-            var current = partidasEnCurso.pop(data.id);
+            var current = partidasEnCurso[data.id];
             console.log(current)
-            var ref = db.ref("partidasPausadas");
-            ref.push({ partida: current });
+            //var ref = db.ref("partidasPausadas");
+            //ref.push({ partida: current });
             if (current.gameState.config.player1uid == data.user.uid) {
                 io.sockets.connected[Conexiones[current.gameState.config.player2uid]]
                     .emit("match-left")
